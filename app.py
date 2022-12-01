@@ -4,12 +4,6 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
-# app.config['MYSQL_HOST'] = '35.238.148.78:3306'
-# app.config['MYSQL_USER'] = 'staniswinata'
-# app.config['MYSQL_PASSWORD'] = 'staniswinata07'
-# app.config['MYSQL_DB'] = 'LibraryDB'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://staniswinata:staniswinata07@35.238.148.78/LibraryDB'
 db = SQLAlchemy(app)
 
 class Books(db.Model):
