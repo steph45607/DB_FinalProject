@@ -14,7 +14,7 @@ CREATE TABLE movies(
 try:
     with connect(
         host="35.238.148.78",
-        user=input("Enter username: "),
+        user="staniswinata",
         password=getpass("Enter password: "),
         database = "LibraryDB"
     ) as connection:
