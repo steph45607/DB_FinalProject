@@ -1,4 +1,6 @@
+from email.mime import image
 from tkinter import *
+from PIL import Image, ImageTk
 
 from main import *
 from app import *
@@ -33,11 +35,13 @@ def createCards(root):
     title = Text(root, width=20, height = 1)
     title.place(relx=.75, rely=.3, anchor=CENTER)
 
-    btnPic = PhotoImage(file = "images/smallBtn.png")
+    global btnPic
+
+    btnPic = PhotoImage(file = "submitBtn.png")
 
     # photo = btnPic.subsample(1,1)
-    cancelBtn = Button(root, image = btnPic, command=lambda: upload(id, title), borderwidth=0)
+    btn = Button(root, image = btnPic, command=lambda: upload(id, title), borderwidth=0, compound = TOP)
     # cancelBtn.config(image = photo)
     # cancelBtn.image = btnPic
-    # cancelBtn.place(relx=.2, rely=.6, anchor=CENTER)
-    cancelBtn.grid(row = 1, column = 1)
+    btn.place(relx=.2, rely=.6, anchor=CENTER)
+    # cancelBtn.grid(row = 1, column = 1)

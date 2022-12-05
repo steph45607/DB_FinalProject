@@ -1,7 +1,4 @@
-from flask import Flask, redirect, render_template, request, redirect
 import mysql.connector
-
-app = Flask(__name__)
 
 conn=mysql.connector.connect(
     host = '35.238.148.78',
