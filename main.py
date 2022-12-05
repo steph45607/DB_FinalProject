@@ -12,8 +12,8 @@ def main():
     # Create tkinter root
     global root
     root = Tk()
-    root.config(bg="#35838B")
-    root.title("FlashCard App")
+    root.config(bg="#CFA3F2")
+    root.title("Library Management System")
 
     # Assign value of device screen size
     setW = root.winfo_screenwidth()
@@ -28,7 +28,7 @@ def main():
     root.resizable(False, False)
 
     # To fill in the window with widgets from frames.py
-    frames.createCards(root)
+    frames.addBooks(root)
 
     # To run the window
     root.mainloop()

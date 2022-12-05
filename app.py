@@ -10,11 +10,25 @@ conn=mysql.connector.connect(
 
 cursor = conn.cursor()
 
-def upload(id, name):
-    idpar = id.get("1.0", "end-1c")
-    namepar = name.get("1.0", "end-1c")
-    statment = ("INSERT INTO test VALUES (%s, %s)")
-    data = (idpar, namepar)
+def upload(id, title, publisher, author_id, status, isbn, group_id):
+    id = id.get("1.0", "end-1c")
+    title = title.get("1.0", "end-1c")
+    publisher = publisher.get("1.0", "end-1c")
+    author_id = author_id.get("1.0", "end-1c")
+    status = status.get("1.0", "end-1c")
+    isbn = isbn.get("1.0", "end-1c")
+    group_id = group_id.get("1.0", "end-1c")
+
+    statment = ("INSERT INTO book_details VALUES (%s, %s, %s, %s, %s, %s)")
+    data = (id, title, author_id, status, isbn, group_id)
     cursor.execute(statment, data)
     conn.commit()
 
+def dropDown():
+    cursor.execute("SELECT * from test")
+    choose = []
+    count = cursor.fetchall()
+    for row in count:
+        choose.append(row[0])
+
+    return choose
