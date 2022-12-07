@@ -34,6 +34,8 @@ def addBooks(root):
     id = Text(root, width=20, height = 1)
     id.place(relx=.3, rely=.3, anchor=W)
 
+    # if id already existed, create a pop up warning
+
     titlePrompt = Label(root,text = "Title:", font=("Roboto", 20), bg=back, fg = offWhite)
     titlePrompt.place(relx=.1, rely = .35, anchor = W)
     title = Text(root, width=40, height = 1)
@@ -71,7 +73,7 @@ def addBooks(root):
 
     global btnPic
     btnPic = PhotoImage(file = "images/submitBtn.png")
-    btn = Button(root, image = btnPic, command=lambda: upload(id, title, pub, auth, isbn, group, status), borderwidth=0, compound = TOP)
+    btn = Button(root, image = btnPic, command=lambda: upload(id, title, auth, pub, status, isbn, group), borderwidth=0, compound = TOP)
     btn.place(relx=.9, rely=.85, anchor=CENTER)
 
     # Check if author exits or not

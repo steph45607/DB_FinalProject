@@ -10,7 +10,7 @@ conn=mysql.connector.connect(
 
 cursor = conn.cursor()
 
-def upload(id, title, publisher, author_id, status, isbn, group_id):
+def upload(id, title, author_id, publisher, status, isbn, group_id):
     id = id.get("1.0", "end-1c")
     title = title.get("1.0", "end-1c")
     publisher = publisher.get("1.0", "end-1c")
