@@ -76,5 +76,8 @@ def addBooks(root):
     btn = Button(root, image = btnPic, command=lambda: upload(id, title, auth, pub, status, isbn, group), borderwidth=0, compound = TOP)
     btn.place(relx=.9, rely=.85, anchor=CENTER)
 
+    btn1 = Button(root, text="drop", command=lambda:author_search(clicked.get()))
+    btn1.place(relx = .2, rely = .85, anchor = CENTER)
+
     # Check if author exits or not
     # if not, pop up a window and prompt first and last name, the id is the same

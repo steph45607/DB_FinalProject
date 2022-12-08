@@ -29,6 +29,12 @@ def dropDown():
     choose = []
     count = cursor.fetchall()
     for row in count:
-        choose.append(row[0])
+        choose.append(row[1])
 
     return choose
+
+def author_search(first):
+    statment = f"SELECT id FROM test WHERE name = '{first}'"
+    cursor.execute(statment)
+    for i in cursor:
+        print(i[0])
