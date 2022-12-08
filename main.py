@@ -1,4 +1,4 @@
-from tkinter import *
+import tkinter
 
 import frames
 
@@ -11,7 +11,7 @@ def main():
 
     # Create tkinter root
     global root
-    root = Tk()
+    root = tkinter.Tk()
     root.config(bg="#CFA3F2")
     root.title("Library Management System")
 

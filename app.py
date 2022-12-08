@@ -1,4 +1,6 @@
 import mysql.connector
+from frames import *
+from main import *
 
 conn=mysql.connector.connect(
     host = '35.238.148.78',
@@ -26,15 +28,18 @@ def upload(id, title, author_id, publisher, status, isbn, group_id):
 
 def dropDown():
     cursor.execute("SELECT * from test")
-    choose = []
+    choose = ["new"]
     count = cursor.fetchall()
-    for row in count:
+    for row in count: # type: ignore
         choose.append(row[1])
 
     return choose
 
-def author_search(first):
-    statment = f"SELECT id FROM test WHERE name = '{first}'"
-    cursor.execute(statment)
-    for i in cursor:
-        print(i[0])
+def author_search(root, first):
+    if first == "new":
+        frames.author_popup(root)
+    else:
+        statment = f"SELECT id FROM test WHERE name = '{first}'"
+        cursor.execute(statment)
+        for i in cursor:  # type: ignore
+            print(i[0])

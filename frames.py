@@ -1,7 +1,5 @@
-from email.mime import image
-from tkinter import *
-from PIL import Image, ImageTk
-
+# from tkinter import *
+from tkinter import Toplevel, Button, TOP, IntVar, StringVar, Label, Text, W, CENTER, OptionMenu, PhotoImage
 from main import *
 from app import *
 
@@ -16,6 +14,27 @@ def cleanPage(root):
     for widget in root.winfo_children(): # To know the widgets used in that page
         widget.destroy() # To delete all the widgets with iteration
 
+def author_popup(root):
+    popup = Toplevel(root)
+    popup.geometry("450x250")
+
+    id_prompt = Label(popup,text = "Author id:", font=("Roboto", 20), bg=back, fg = offWhite)
+    id_prompt.place(relx=.1, rely = .3, anchor = W)
+    id = Text(popup, width=20, height = 1)
+    id.place(relx=.3, rely=.3, anchor=W)
+
+    firstname_prompt = Label(popup,text = "First Name:", font=("Roboto", 20), bg=back, fg = offWhite)
+    firstname_prompt.place(relx=.1, rely = .35, anchor = W)
+    firstname = Text(popup, width=40, height = 1)
+    firstname.place(relx=.3, rely=.35, anchor=W)
+
+    lastname_prompt = Label(popup,text = "Last Name:", font=("Roboto", 20), bg=back, fg = offWhite)
+    lastname_prompt.place(relx=.1, rely = .4, anchor = W)
+    lastname = Text(popup, width=40, height = 1)
+    lastname.place(relx=.3, rely=.4, anchor=W)
+
+    submit = Button(popup, text="Submit")
+    submit.place(relx=.9, rely=.5, anchor=CENTER)
 
 def addBooks(root):
     # Create cards page, user can input manually front and back / word and desc to cards
@@ -76,7 +95,7 @@ def addBooks(root):
     btn = Button(root, image = btnPic, command=lambda: upload(id, title, auth, pub, status, isbn, group), borderwidth=0, compound = TOP)
     btn.place(relx=.9, rely=.85, anchor=CENTER)
 
-    btn1 = Button(root, text="drop", command=lambda:author_search(clicked.get()))
+    btn1 = Button(root, text="drop", command=lambda:author_search(root, clicked.get()))
     btn1.place(relx = .2, rely = .85, anchor = CENTER)
 
     # Check if author exits or not
