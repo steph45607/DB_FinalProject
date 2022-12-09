@@ -12,44 +12,59 @@ conn=mysql.connector.connect(
 
 cursor = conn.cursor()
 
-def upload(id, title, author_id, publisher, status, isbn, group_id):
+# to upload hte books to book_details database
+def upload(root, id, title, author_name, publisher, isbn, group, status, damages):
     id = id.get("1.0", "end-1c")
     title = title.get("1.0", "end-1c")
-    publisher = publisher.get("1.0", "end-1c")
-    author_id = author_id.get("1.0", "end-1c")
-    status = status.get("1.0", "end-1c")
-    isbn = isbn.get("1.0", "end-1c")
-    group_id = group_id.get("1.0", "end-1c")
+    author_name = author_name.get()
+    author_id = check_dropdown(root, "author_details", "firstName", author_name, "id", "firstName", "lastName")
 
-    statment = ("INSERT INTO book_details VALUES (%s, %s, %s, %s, %s, %s)")
-    data = (id, title, author_id, status, isbn, group_id)
+    publisher = publisher.get()
+    pub_id = check_dropdown(root, "publisher_details", "name", publisher, "id", "name", "email")
+
+    isbn = isbn.get("1.0", "end-1c")
+
+    group = group.get()
+    group_id = check_dropdown(root, "group_details", "group_name", group, "id", "group_name", "location")
+
+    status = status.get()
+    status_id = check_dropdown(root, "status_details", "detail", status, "id", "detail", "")
+    
+    damages = damages.get()
+    damages_id = check_dropdown(root, "damages_details", "detail", damages, "id", "detail", "")
+
+    statment = ("INSERT INTO book_details VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
+    data = (id, title, author_id, pub_id, isbn, group_id, status_id, damages_id)
     cursor.execute(statment, data)
     conn.commit()
+    print("inserted")
 
+# create a dropdown 
 def dropDown(table):
     cursor.execute(f"SELECT * from {table}")
     choose = ["new"]
     count = cursor.fetchall()
     for row in count: # type: ignore
         choose.append(row[1])
-    
     return choose
 
-def addAuthor(id, fName, lName):
-    id = id.get("1.0", "end-1c")
-    fName = fName.get("1.0", "end-1c")
-    lName = lName.get("1.0", "end-1c")
+def add(root, table, value1, value2, value3):
+    value1 = value1.get("1.0", "end-1c")
+    value2 = value2.get("1.0", "end-1c")
+    value3 = value3.get("1.0", "end-1c")
 
-    statment = ("INSERT INTO author_details VALUES (%s, %s, %s)")
-    data = (id, fName, lName)
+    statment = (f"INSERT INTO {table} VALUES (%s, %s, %s)")
+    data = (value1, value2, value3)
     cursor.execute(statment, data)
     conn.commit()
+    frames.close_win(root)
+    
 
-def author_search(root, first):
-    if first == "new":
-        frames.author_popup(root)
+def check_dropdown(root, table, parameter,value, text1, text2, text3):
+    if value == "new":
+        frames.popup_three(root, text1, text2, text3, table)
     else:
-        statment = f"SELECT id FROM author_details WHERE firstName = '{first}'"
+        statment = f"SELECT id FROM {table} WHERE {parameter} = '{value}'"
         cursor.execute(statment)
         for i in cursor:  # type: ignore
-            print(i[0])
+            return i[0]
