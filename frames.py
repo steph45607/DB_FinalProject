@@ -33,7 +33,7 @@ def author_popup(root):
     lastname = Text(popup, width=40, height = 1)
     lastname.place(relx=.3, rely=.4, anchor=W)
 
-    submit = Button(popup, text="Submit")
+    submit = Button(popup, text="Submit", command=lambda:addAuthor(id, firstname, lastname))
     submit.place(relx=.9, rely=.5, anchor=CENTER)
 
 def addBooks(root):
@@ -86,8 +86,9 @@ def addBooks(root):
     status.place(relx=.3, rely=.6, anchor=W)
 
     clicked = StringVar()
-    options = dropDown()
-    drop = OptionMenu(root, clicked, *options)
+    options = dropDown("author_details")
+    print(type(options))
+    drop = OptionMenu(root, clicked, *options)  # type: ignore
     drop.place(relx = .5, rely = .85, anchor= CENTER)
 
     global btnPic
