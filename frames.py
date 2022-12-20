@@ -1,7 +1,7 @@
 # from tkinter import *
 from tkinter import Toplevel, Button, TOP, IntVar, StringVar, Label, Text, W, CENTER, OptionMenu, PhotoImage
 from main import *
-from app import *
+from methods import *
 
 # Colors
 offWhite = "#FAF9F6"
@@ -110,7 +110,9 @@ def addBooks(root):
 
     global btnPic
     btnPic = PhotoImage(file = "images/submitBtn.png")
-    btn = Button(root, image = btnPic, command=lambda: upload(root, id, title, author_name,pub, isbn, group, status, damages), borderwidth=0, compound = TOP)
+    btn = Button(root, image = btnPic, command=lambda:print(pub.get()), borderwidth=0, compound = TOP)
+
+    # btn = Button(root, image = btnPic, command=lambda: upload(root, id, title, author_name,pub, isbn, group, status, damages), borderwidth=0, compound = TOP)
     btn.place(relx=.9, rely=.85, anchor=CENTER)
 
     # btn1 = Button(root, text="drop", command=lambda:author_search(root, clicked.get()))

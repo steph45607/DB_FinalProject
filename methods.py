@@ -12,6 +12,15 @@ conn=mysql.connector.connect(
 
 cursor = conn.cursor()
 
+# create a dropdown 
+def searchBooks(table):
+    cursor.execute(f"SELECT * from {table}")
+    choose = []
+    count = cursor.fetchall()
+    for row in count: # type: ignore
+        choose.append(row[1])
+    return choose
+
 # to upload hte books to book_details database
 def upload(root, id, title, author_name, publisher, isbn, group, status, damages):
     id = id.get("1.0", "end-1c")
@@ -68,3 +77,4 @@ def check_dropdown(root, table, parameter,value, text1, text2, text3):
         cursor.execute(statment)
         for i in cursor:  # type: ignore
             return i[0]
+

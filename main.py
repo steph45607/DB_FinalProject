@@ -1,7 +1,7 @@
 import tkinter
 
 import frames
-
+import framesSearch
 global root
 
 def main():
@@ -28,7 +28,8 @@ def main():
     root.resizable(False, False)
 
     # To fill in the window with widgets from frames.py
-    frames.addBooks(root)
+    # frames.addBooks(root)
+    framesSearch.search_records(root)
 
     # To run the window
     root.mainloop()
