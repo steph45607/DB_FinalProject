@@ -26,21 +26,21 @@ def upload(root, id, title, author_name, publisher, isbn, group, status, damages
     id = id.get("1.0", "end-1c")
     title = title.get("1.0", "end-1c")
     author_name = author_name.get()
-    author_id = check_dropdown(root, "author_details", "firstName", author_name, "id", "firstName", "lastName")
+    author_id = check_dropdown_three(root, "author_details", "firstName", author_name, "id", "firstName", "lastName")
 
     publisher = publisher.get()
-    pub_id = check_dropdown(root, "publisher_details", "name", publisher, "id", "name", "email")
+    pub_id = check_dropdown_three(root, "publisher_details", "name", publisher, "id", "name", "email")
 
     isbn = isbn.get("1.0", "end-1c")
 
     group = group.get()
-    group_id = check_dropdown(root, "group_details", "group_name", group, "id", "group_name", "location")
+    group_id = check_dropdown_three(root, "group_details", "group_name", group, "id", "group_name", "location")
 
     status = status.get()
-    status_id = check_dropdown(root, "status_details", "detail", status, "id", "detail", "")
+    status_id = check_dropdown_two(root, "status_details", "detail", status, "id", "detail")
     
     damages = damages.get()
-    damages_id = check_dropdown(root, "damages_details", "detail", damages, "id", "detail", "")
+    damages_id = check_dropdown_two(root, "damages_details", "detail", damages, "id", "detail")
 
     statment = ("INSERT INTO book_details VALUES (%s, %s, %s, %s, %s, %s, %s, %s)")
     data = (id, title, author_id, pub_id, isbn, group_id, status_id, damages_id)
@@ -57,7 +57,7 @@ def dropDown(table):
         choose.append(row[1])
     return choose
 
-def add(root, table, value1, value2, value3):
+def add_three(root, table, value1, value2, value3):
     value1 = value1.get("1.0", "end-1c")
     value2 = value2.get("1.0", "end-1c")
     value3 = value3.get("1.0", "end-1c")
@@ -67,9 +67,19 @@ def add(root, table, value1, value2, value3):
     cursor.execute(statment, data)
     conn.commit()
     frames.close_win(root)
+
+def add_two(root, table, value1, value2):
+    value1 = value1.get("1.0", "end-1c")
+    value2 = value2.get("1.0", "end-1c")
+
+    statment = (f"INSERT INTO {table} VALUES (%s, %s)")
+    data = (value1, value2)
+    cursor.execute(statment, data)
+    conn.commit()
+    frames.close_win(root)
     
 
-def check_dropdown(root, table, parameter,value, text1, text2, text3):
+def check_dropdown_three(root, table, parameter,value, text1, text2, text3):
     if value == "new":
         frames.popup_three(root, text1, text2, text3, table)
     else:
@@ -78,3 +88,11 @@ def check_dropdown(root, table, parameter,value, text1, text2, text3):
         for i in cursor:  # type: ignore
             return i[0]
 
+def check_dropdown_two(root, table, parameter,value, text1, text2):
+    if value == "new":
+        frames.popup_two(root, text1, text2, table)
+    else:
+        statment = f"SELECT id FROM {table} WHERE {parameter} = '{value}'"
+        cursor.execute(statment)
+        for i in cursor:  # type: ignore
+            return i[0]
