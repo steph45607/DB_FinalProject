@@ -12,4 +12,4 @@ conn=mysql.connect(
 
 cursor = conn.cursor()
 stamtment = 'insert into book_details values (&s, &s, &s, &s, &s, &s)'
-data = pd.read_csv()
+data = pd.read_csv("resources/books.csv")
