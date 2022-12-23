@@ -1,4 +1,4 @@
-import tkinter
+from tkinter import *
 
 import frames
 import framesSearch
@@ -11,7 +11,7 @@ def main():
 
     # Create tkinter root
     global root
-    root = tkinter.Tk()
+    root = Tk()
     root.config(bg="#CFA3F2")
     root.title("Library Management System")
 
@@ -29,7 +29,7 @@ def main():
 
     # To fill in the window with widgets from frames.py
     # frames.addBooks(root)
-    framesSearch.search_records(root)
+    frames.landingPage(root)
 
     # To run the window
     root.mainloop()
