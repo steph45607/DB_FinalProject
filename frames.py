@@ -9,6 +9,7 @@ import ttk
 # Colors
 offWhite = "#FAF9F6"
 back = "#CFA3F2"
+myFont = font.Font(family="Helvetica")
 
 # To clean the root window, used to change between frames
 def cleanPage(root):
@@ -22,6 +23,22 @@ def cleanPage(root):
 def close_win(root):
     root.destroy()
 
+def invalidPopup(root):
+    invalidpop = Toplevel(root)
+    invalidpop.geometry("400x200")
+    invalidpop.resizable(False, False)
+    invalidpop.configure(bg="white")
+    invalidpop.title("Login Failed")
+        
+    Label(invalidpop, font=(myFont,15), text = "Invalid username or password !", background="white", foreground="black").place(relx=0.15, rely=0.27)
+    Label(invalidpop, font=(myFont,15), text = "Try again later. ", background="white", foreground="black").place(relx=0.15, rely=0.4)
+        
+    def close():
+        invalidpop.destroy()
+
+    backButton = backButton = Button(invalidpop,text = '  OK  ', command = close, foreground="white", background='#2C602E', font=(myFont, 15))
+    backButton.place(relx=0.4, rely = 0.6)
+
 def landingPage(root):
     cleanPage(root)
     # Add image file
@@ -30,30 +47,20 @@ def landingPage(root):
     global logo
     logo = PhotoImage(file = "images/logo.png" )
     global qr
-    qr = PhotoImage(file="images/qr.png")
-
-    myFont = font.Font(family='Helvetica')
-
+    qr = PhotoImage(file="images/qr.png")        
     # Show image using label
-    backgroundlabel = Label(root, image = background, background="white")
+    backgroundlabel = Label(root, image = background, background="white" )
     backgroundlabel.place(x = 0, y = 0)
 
     logolabel = Label(root, image = logo)
     logolabel.place(relx=0.143, rely = 0.38)
 
-    # frameButton = Frame(root)
-    # frameButton.pack(pady=10, side=LEFT )
-
-    userButton = Button(root, font=(myFont,18), text = "  User  ", background="#2C602E", foreground="white")
+    userButton = Button(root, font=(myFont,18), command= lambda:loginUser(root), text = "  User  ", background="#2C602E", foreground="white")
     userButton.place(relx=0.18, rely = 0.6)
 
-    adminButton = Button(root, font=(myFont,18), text = " Admin ", background="#2C602E", foreground="white")
+    adminButton = Button(root, font=(myFont,18), command= lambda:loginAdmin(root), text = " Admin ", background="#2C602E", foreground="white")
     adminButton.place(relx=0.29, rely = 0.6)
 
-    frameright = Frame(root)
-    frameright.pack(pady=10, side=LEFT )
-
-    # T = Text(root, height = 5, width = 52)
     textWelcome = Label(root, font=(myFont,18), text="Welcome to BookStack", bg="#1A371B", foreground='white')
     textWelcome.place(relx=0.63, rely=0.22)
 
@@ -72,7 +79,6 @@ def landingPage(root):
     textIntro5 = Label(root, font=(myFont, 10), text="systems", bg="#1A371B", foreground='white')
     textIntro5.place(relx=0.63, rely=0.48)
 
-
     qrlabel = Label(root, image = qr, background="#1A371B")
     qrlabel.place(relx =0.618, rely=0.54)
 
@@ -81,9 +87,67 @@ def landingPage(root):
 
     textIntro7 = Label(root, font=(myFont, 10), text="by scanning the QR Code!", bg="#1A371B", foreground='white')
     textIntro7.place(relx=0.701, rely=0.59)
+    
+def loginAdmin(root):
+    cleanPage(root)
+    root.title("Enter Admin Login Credentials")
 
-    loginBtn = Button(root, text="login", command=lambda:menuPage(root))
-    loginBtn.place(relx=.9, rely=.9, anchor=CENTER)
+    usernameVar=StringVar()
+    passwordVar=StringVar()
+
+    def adminCheck():
+        username=usernameVar.get()
+        password=passwordVar.get()
+
+        if username == "marracste" and password=="dbtech123":
+            print("The name is : " + username)
+            print("The password is : " + password)
+        else:
+            invalidPopup(root)
+
+    Label(root, font=(myFont,15), text = "Username : ", background="#2C602E", foreground="white").place(relx=0.17, rely=0.3)
+    usernameInput = Entry(root,textvariable = usernameVar, font=(myFont,13,'normal'))
+    usernameInput.place(relx=0.35, rely=0.32,  width=270)
+
+    Label(root, font=(myFont,15), text = "Password : ", background="#2C602E", foreground="white").place(relx=0.17, rely=0.45)
+    passwordInput= Entry(root, textvariable = passwordVar, font = (myFont,13,'normal'), show = '*')
+    passwordInput.place(relx=0.35, rely=0.47,  width=270)
+
+    loginButton = Button(root,text = 'Login', command = adminCheck, foreground="#2C602E", background='white', font=(myFont, 15))
+    loginButton.place(relx=0.35, rely = 0.6)
+
+    backButton = backButton = Button(root,text = 'Back', command = lambda:landingPage(root), foreground="#2C602E", background='white', font=(myFont, 10))
+    backButton.place(relx=0.01, rely = 0.02)
+
+def loginUser(root):
+    cleanPage(root)
+    root.title("Enter User Login Credentials")
+
+    usernameVar=StringVar()
+    passwordVar=StringVar()
+
+    def userCheck():
+        username=usernameVar.get()
+        password=passwordVar.get()
+
+        if username == "IamUser" and password=="hello123":
+            print("The name is : " + username)
+            print("The password is : " + password)
+        else:
+            invalidPopup(root)
+    Label(root, font=(myFont,15), text = "Username : ", background="#2C602E", foreground="white").place(relx=0.17, rely=0.3)
+    usernameInput = Entry(root,textvariable = usernameVar, font=(myFont,13,'normal'))
+    usernameInput.place(relx=0.35, rely=0.32,  width=270)
+
+    Label(root, font=(myFont,15), text = "Password : ", background="#2C602E", foreground="white").place(relx=0.17, rely=0.45)
+    passwordInput= Entry(root, textvariable = passwordVar, font = (myFont,13,'normal'), show = '*')
+    passwordInput.place(relx=0.35, rely=0.47,  width=270)
+
+    loginButton = Button(root,text = 'Login', command = userCheck, foreground="#2C602E", background='white', font=(myFont, 15))
+    loginButton.place(relx=0.35, rely = 0.6)
+
+    backButton = backButton = Button(root,text = 'Back', command = lambda:landingPage(root), foreground="#2C602E", background='white', font=(myFont, 10), borderwidth=0)
+    backButton.place(relx=0.01, rely = 0.02)
 
 def menuPage(root):
     cleanPage(root)
@@ -100,7 +164,7 @@ def menuPage(root):
     addTransactionBtn = Button(root, text = "Add Transaction")
     addTransactionBtn.place(relx=.35, rely=.35, anchor=CENTER)
 
-    addBookBtn = Button(root, text = "Add Books", command=lambda:addBooks(root))
+    addBookBtn = Button(root, text = "Add Books", command=lambda:addBooksNew(root))
     addBookBtn.place(relx=.65, rely=.35, anchor=CENTER)
 
     exitBtn = Button(root, text = "Exit / Change Account", command=lambda:landingPage(root))
@@ -222,3 +286,76 @@ def addBooks(root):
 
     backBtn = Button(root, text = "Back to menu", command=lambda:menuPage(root))
     backBtn.place(relx=.1, rely=.05, anchor=CENTER)
+
+def addBooksNew(root):
+    global background
+    background = PhotoImage(file = "images/backgroundAddBooks.png")
+
+    myFont = font.Font(family='Helvetica')
+    myColor = "#1A371B"
+
+    # Show image using label
+    backgroundlabel = Label(root, image = background, background="white" )
+    backgroundlabel.place(x = -1, y = -1)
+
+    Label(root, font=('Helvetica Bold',23), text = " Add Book Details ", background=myColor, foreground='white').place(relx=0.38, rely=0.1)
+
+
+    #bookID input
+    bookIDVar=StringVar()
+    Label(root, font=(myFont,15), text = "Book ID   : ", background=myColor, foreground="white").place(relx=0.17, rely=0.18)
+    id= Entry(root, textvariable = bookIDVar, font = (myFont,13,'normal'),)
+    id.place(relx=0.28, rely=0.205,  width=500, anchor=W)
+
+    #title Input
+    titleVar=StringVar()
+    Label(root, font=(myFont,15), text = "Title         : ", background=myColor, foreground="white").place(relx=0.17, rely=0.23)
+    title= Entry(root, textvariable = titleVar, font = (myFont,13,'normal'),)
+    title.place(relx=0.28, rely=0.255,  width=500, anchor=W)
+
+    #Author input
+    author_name = StringVar()
+    author_list = dropDown("author_details") 
+    Label(root, font=(myFont,15), text = "Author      : ", background=myColor, foreground="white").place(relx=0.17, rely=0.29)
+    author_dropdown = OptionMenu(root, author_name, *author_list).place(relx = 0.28, rely=0.31, width=500, anchor=W)
+
+    #publisher input
+    pub = StringVar()
+    pub_list = dropDown("publisher_details")
+    Label(root, font=(myFont,15), text = "Publisher  : ", background=myColor, foreground="white").place(relx=0.17, rely=0.35)
+    pub_dropdown = OptionMenu(root, pub, *pub_list).place(relx=0.28, rely=0.370, width=500, anchor=W)
+
+    #isbn input
+    isbnVar =StringVar()
+    Label(root, font=(myFont,15), text = "ISBN        : ", background=myColor, foreground="white").place(relx=0.17, rely=0.405)
+    isbn= Entry(root, textvariable = isbnVar, font = (myFont,13,'normal'),)
+    isbn.place(relx=0.28, rely=0.425,  width=500, anchor=W)
+
+    #group input
+    group = StringVar()
+    group_list = dropDown("group_details")
+    Label(root, font=(myFont,15), text = "Group      : ", background=myColor, foreground="white").place(relx=0.17, rely=0.455)
+    group_dropdown = OptionMenu(root, group, *group_list).place(relx=0.28, rely=0.48, width=500, anchor=W)
+
+    #status input
+    status = StringVar()
+    status_list = dropDown("status_details")
+    Label(root, font=(myFont,15), text = "Status      : ", background=myColor, foreground="white").place(relx=0.17, rely=0.515)
+    status_dropdown = OptionMenu(root, status, *status_list).place(relx=0.28, rely=0.540, width = 500, anchor=W)
+
+    #damages input
+    damages = StringVar()
+    damages_list = dropDown("damages_details")
+    Label(root, font=(myFont,15), text = "Damages : ", background=myColor, foreground="white").place(relx=0.17, rely=0.57)
+    damages_dropdown = OptionMenu(root, damages, *damages_list).place(relx=0.28, rely=0.6, width=500, anchor=W)
+
+    subButton = Button(root,text = ' Submit ', command =lambda:upload(root, id, title, author_name,pub, isbn, group, status, damages), foreground=myColor, background='white', font=(myFont, 15))
+    subButton.place(relx=0.28, rely = 0.64)
+
+    #i cant fnd the command for the display button but here it is tinggal nambahin the command
+    displayButton = Button(root,text = ' Display ', foreground=myColor, background='white', font=(myFont, 15) )
+    displayButton.place(relx=0.375, rely = 0.64)
+
+    #havent added any commands, but this button to return to prev page
+    backButton = backButton = Button(root,text = '  Back  ', foreground=myColor, background='white', font=(myFont, 15))
+    backButton.place(relx=0.475, rely = 0.64)
