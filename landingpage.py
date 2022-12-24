@@ -20,7 +20,7 @@ myFont = font.Font(family='Helvetica')
 backgroundlabel = Label(root, image = background, background="white" )
 backgroundlabel.place(x = 0, y = 0)
 
-logolabel = Label(root, image = logo)
+logolabel = Label(root, image = logo, background='white')
 logolabel.place(relx=0.143, rely = 0.38)
 
 
