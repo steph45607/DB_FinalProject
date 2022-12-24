@@ -1,12 +1,9 @@
 # Import module 
 from tkinter import *
-from tkinter import OptionMenu
 import tkinter.font as font
 from main import *
 from methods import *
-from tkinter import ttk
 from tkinter.messagebox import askyesno
-
 
 # Create object 
 adminmenu = Tk()
@@ -45,7 +42,7 @@ bookBtn.place(relx=0.5, rely=0.24,  width=240)
 
 #add books btn
 addbookBtnPhoto = PhotoImage(file = "images/addbook.png").subsample(8,8)
-addBookBtn = Button(adminmenu,text = ' Add Books  ', image=addbookBtnPhoto, compound =LEFT, foreground='black', background='white', command=lambda:addBooks(root), font=(myFont, 15))
+addBookBtn = Button(adminmenu,text = ' Add Books  ', image=addbookBtnPhoto, compound =LEFT, foreground='black', background='white', font=(myFont, 15)) #command=lambda:addBooks(root)
 addBookBtn.place(relx=0.5, rely=0.4,  width=240)
 
 #confirmation popup message if want to log out

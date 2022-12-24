@@ -9,7 +9,7 @@ import ttk
 # Colors
 offWhite = "#FAF9F6"
 back = "#CFA3F2"
-myFont = font.Font(family="Helvetica")
+# myFont = font.Font(family="Helvetica")
 
 # To clean the root window, used to change between frames
 def cleanPage(root):
