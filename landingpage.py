@@ -47,7 +47,7 @@ def loginPopupAdmin():
         def close():
             invalidpop.destroy()
 
-        backButton = backButton = Button(invalidpop,text = '  Back  ', command = close, foreground="white", background='#2C602E', font=(myFont, 15))
+        backButton = backButton = Button(invalidpop,text = '  Ok  ', command = close, foreground="white", background='#2C602E', font=(myFont, 15))
         backButton.place(relx=0.4, rely = 0.6)
 
     def adminCheck():
@@ -77,8 +77,8 @@ def loginPopupAdmin():
     def closeLogin():
         top.destroy()
 
-    backButton = backButton = Button(top,text = 'Back', command = closeLogin, foreground="#2C602E", background='white', font=(myFont, 15))
-    backButton.place(relx=0.47, rely = 0.6)
+    backButton = backButton = Button(top,text = 'Back', command = closeLogin, foreground="#2C602E", background='white', font=(myFont, 10))
+    backButton.place(relx=0.01, rely = 0.02)
 
 
 def loginPopupUser():
@@ -104,10 +104,10 @@ def loginPopupUser():
         def close():
             invalidpop.destroy()
 
-        backButton = backButton = Button(invalidpop,text = '  Back  ', command = close, foreground="white", background='#2C602E', font=(myFont, 15))
+        backButton = backButton = Button(invalidpop,text = '  OK  ', command = close, foreground="white", background='#2C602E', font=(myFont, 15))
         backButton.place(relx=0.4, rely = 0.6)
 
-    def adminCheck():
+    def userCheck():
         username=usernameVar.get()
         password=passwordVar.get()
         
@@ -127,14 +127,14 @@ def loginPopupUser():
     passwordInput= Entry(top, textvariable = passwordVar, font = (myFont,13,'normal'), show = '*')
     passwordInput.place(relx=0.35, rely=0.47,  width=270)
 
-    loginButton = Button(top,text = 'Login', command = adminCheck, foreground="#2C602E", background='white', font=(myFont, 15))
+    loginButton = Button(top,text = 'Login', command = userCheck, foreground="#2C602E", background='white', font=(myFont, 15))
     loginButton.place(relx=0.35, rely = 0.6)
 
     def closeLogin():
         top.destroy()
 
-    backButton = backButton = Button(top,text = 'Back', command = closeLogin, foreground="#2C602E", background='white', font=(myFont, 15))
-    backButton.place(relx=0.47, rely = 0.6)
+    backButton = backButton = Button(top,text = 'Back', command = closeLogin, foreground="#2C602E", background='white', font=(myFont, 10), borderwidth=0)
+    backButton.place(relx=0.01, rely = 0.02)
 
 userButton = Button(root, font=(myFont,18), command= loginPopupUser, text = "  User  ", background="#2C602E", foreground="white")
 userButton.place(relx=0.18, rely = 0.6)
