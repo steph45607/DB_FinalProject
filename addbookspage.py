@@ -13,7 +13,7 @@ addbooks.geometry("1000x600")
 addbooks.resizable(False, False)
 addbooks.title("BookStack LMS") 
 # Add image file
-background = PhotoImage(file = "images/backgroundAddBooks.png")
+background = PhotoImage(file = "images/backgroundMenu.png")
 
 myFont = font.Font(family='Helvetica')
 myColor = "#1A371B"
@@ -80,7 +80,7 @@ subButton.place(relx=0.28, rely = 0.64)
 displayButton = Button(addbooks,text = ' Display ', foreground=myColor, background='white', font=(myFont, 15) )
 displayButton.place(relx=0.375, rely = 0.64)
 
-backButton = backButton = Button(addbooks,text = 'Back', foreground=myColor, background='white', font=(myFont, 10), borderwidth=0)
+backButton = Button(addbooks,text = 'Back', foreground=myColor, background='white', font=(myFont, 10), borderwidth=0)
 backButton.place(relx=0.01, rely = 0.02)
 
 # #havent added any commands, but this button to return to prev page
