@@ -1,7 +1,7 @@
 from tkinter import *
+import tkinter.font as font
 
 import frames
-import framesSearch
 global root
 
 def main():
@@ -12,8 +12,10 @@ def main():
     # Create tkinter root
     global root
     root = Tk()
-    root.config(bg="#CFA3F2")
+    root.config(bg="#2C602E")
     root.title("Library Management System")
+    global myFont
+    myFont = font.Font(family="Helvetica")
 
     # Assign value of device screen size
     setW = root.winfo_screenwidth()
@@ -28,8 +30,7 @@ def main():
     root.resizable(False, False)
 
     # To fill in the window with widgets from frames.py
-    # frames.addBooks(root)
-    frames.landingPage(root)
+    frames.menuPage(root)
 
     # To run the window
     root.mainloop()
