@@ -653,7 +653,7 @@ def displayBooks(root):
     view.heading("9", text="Damage")
 
     for i in set:  # type: ignore
-        print(i)
+        # print(i)
         view.insert(
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
         )
@@ -669,6 +669,24 @@ def displayBooks(root):
     )
     deleteBtn.place(relx=0.8, rely=0.8)
 
+    authorBtn = Button(root, text = "Author", command=lambda:sortAuthor_book(view))
+    authorBtn.place(relx=0.6, rely=0.8)
+
+    publisherBtn = Button(root, text = "Publisher", command=lambda:sortPublisher_book(view))
+    publisherBtn.place(relx=0.5, rely=0.8)
+
+    idBtn = Button(root, text = "ID", command=lambda:sortBookID_book(view))
+    idBtn.place(relx=0.4, rely=0.8)
+
+    titleBtn = Button(root, text = "Title", command = lambda:sortTitle_book(view))
+    titleBtn.place(relx=0.3, rely=0.8)
+
+    availBtn = Button(root, text = "Available", command=lambda:sortStatusAvail_book(view))
+    availBtn.place(relx=0.2, rely=0.8)
+
+    availBtn = Button(root, text = "Unavailable", command=lambda:sortStatusUnavail_book(view))
+    availBtn.place(relx=0.1, rely=0.8)
+
     backBtn = Button(
         root,
         text="Back",
@@ -679,3 +697,5 @@ def displayBooks(root):
         borderwidth=0,
     )
     backBtn.place(relx=0.05, rely=0.03)
+
+# def displayTransaction(root):
