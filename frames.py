@@ -77,7 +77,7 @@ def landingPage(root):
     backgroundlabel = Label(root, image=background, background="white")
     backgroundlabel.place(x=0, y=0)
 
-    logolabel = Label(root, image=logo)
+    logolabel = Label(root, image=logo, background="white")
     logolabel.place(relx=0.143, rely=0.38)
 
     userButton = Button(
@@ -174,8 +174,11 @@ def landingPage(root):
 
 def loginAdmin(root):
     cleanPage(root)
-    root.title("Enter Admin Login Credentials")
-
+    global background
+    background = PhotoImage(file="images/backgroundLogin.png")
+    backgroundlabel = Label(root, image=background, background="white")
+    backgroundlabel.place(x=0, y=0)
+    
     usernameVar = StringVar()
     passwordVar = StringVar()
 
@@ -184,50 +187,56 @@ def loginAdmin(root):
         password = passwordVar.get()
 
         if username == "admin" and password == "admin123":
-            print("The name is : " + username)
-            print("The password is : " + password)
             menuPage(root)
         else:
             invalidPopup(root)
 
     Label(
         root,
+        font=("Helvetica Bold", 25),
+        text=" Admin Login ",
+        background="white",
+        foreground="#1A371B",
+    ).place(relx=0.38, rely=0.1)
+
+    Label(
+        root,
         font=(myFont, 15),
         text="Username : ",
-        background="#2C602E",
+        background="#1A371B",
         foreground="white",
-    ).place(relx=0.17, rely=0.3)
+    ).place(relx=0.38, rely=0.46)
     usernameInput = Entry(root, textvariable=usernameVar, font=(myFont, 13, "normal"))
-    usernameInput.place(relx=0.35, rely=0.32, width=270)
+    usernameInput.place(relx=0.5, rely=0.47, width=270)
 
     Label(
         root,
         font=(myFont, 15),
         text="Password : ",
-        background="#2C602E",
+        background="#1A371B",
         foreground="white",
-    ).place(relx=0.17, rely=0.45)
+    ).place(relx=0.38, rely=0.51)
     passwordInput = Entry(
         root, textvariable=passwordVar, font=(myFont, 13, "normal"), show="*"
     )
-    passwordInput.place(relx=0.35, rely=0.47, width=270)
+    passwordInput.place(relx=0.5, rely=0.52, width=270)
 
     loginButton = Button(
         root,
-        text="Login",
+        text=" Login ",
         command=adminCheck,
         foreground="#2C602E",
         background="white",
         font=(myFont, 15),
     )
-    loginButton.place(relx=0.35, rely=0.6)
+    loginButton.place(relx=0.382, rely=0.57)
 
     backButton = backButton = Button(
         root,
-        text="Back",
+        text=" Back ",
         command=lambda: landingPage(root),
-        foreground="#2C602E",
-        background="white",
+        foreground="white",
+        background="#1A371B",
         font=(myFont, 10),
     )
     backButton.place(relx=0.01, rely=0.02)
@@ -235,7 +244,10 @@ def loginAdmin(root):
 
 def loginUser(root):
     cleanPage(root)
-    root.title("Enter User Login Credentials")
+    global background
+    background = PhotoImage(file="images/backgroundLogin.png")
+    backgroundlabel = Label(root, image=background, background="white")
+    backgroundlabel.place(x=0, y=0)
 
     usernameVar = StringVar()
     passwordVar = StringVar()
@@ -245,51 +257,57 @@ def loginUser(root):
         password = passwordVar.get()
 
         if username == "user" and password == "user123":
-            print("The name is : " + username)
-            print("The password is : " + password)
+            print("Successful Login!")
         else:
             invalidPopup(root)
 
     Label(
         root,
+        font=("Helvetica Bold", 25),
+        text=" User Login ",
+        background="white",
+        foreground="#1A371B",
+    ).place(relx=0.38, rely=0.1)
+
+    Label(
+        root,
         font=(myFont, 15),
         text="Username : ",
-        background="#2C602E",
+        background="#1A371B",
         foreground="white",
-    ).place(relx=0.17, rely=0.3)
+    ).place(relx=0.38, rely=0.46)
     usernameInput = Entry(root, textvariable=usernameVar, font=(myFont, 13, "normal"))
-    usernameInput.place(relx=0.35, rely=0.32, width=270)
+    usernameInput.place(relx=0.5, rely=0.47, width=270)
 
     Label(
         root,
         font=(myFont, 15),
         text="Password : ",
-        background="#2C602E",
+        background="#1A371B",
         foreground="white",
-    ).place(relx=0.17, rely=0.45)
+    ).place(relx=0.38, rely=0.51)
     passwordInput = Entry(
         root, textvariable=passwordVar, font=(myFont, 13, "normal"), show="*"
     )
-    passwordInput.place(relx=0.35, rely=0.47, width=270)
+    passwordInput.place(relx=0.5, rely=0.52, width=270)
 
     loginButton = Button(
         root,
-        text="Login",
+        text=" Login ",
         command=userCheck,
         foreground="#2C602E",
         background="white",
         font=(myFont, 15),
     )
-    loginButton.place(relx=0.35, rely=0.6)
+    loginButton.place(relx=0.382, rely=0.57)
 
     backButton = backButton = Button(
         root,
-        text="Back",
+        text=" Back ",
         command=lambda: landingPage(root),
-        foreground="#2C602E",
-        background="white",
+        foreground="white",
+        background="#1A371B",
         font=(myFont, 10),
-        borderwidth=0,
     )
     backButton.place(relx=0.01, rely=0.02)
 
@@ -624,28 +642,92 @@ def displayBooks(root):
     myFont = font.Font(family="Helvetica")
     cleanPage(root)
 
+    global background
+    background = PhotoImage(file="images/backgroundDisplay.png")
+
+    # Show image using label
+    backgroundlabel = Label(root, image=background, background="white")
+    backgroundlabel.place(x=-1, y=-1)
+
+    Label(
+        root,
+        font=("Helvetica Bold", 25),
+        text="Registered Books ",
+        background="#1A371B",
+        foreground="white",
+    ).place(relx=0.38, rely=0.06)
+
+    Label(
+        root,
+        font=(myFont, 15),
+        text="Search By Title : ",
+        background="#1A371B",
+        foreground="white",
+    ).place(relx=0.02, rely=0.18)
+    searchVar = StringVar()
+
+    def find():
+        searched = searchVar.get()
+        searchTitle(view, searched)
+    
+    searchInput = Entry(root, textvariable=searchVar, font=(myFont, 13, "normal"))
+    searchInput.place(relx=0.19, rely=0.19, width=330)
+
+    def refresh():
+        searchVar.set("")
+        sortBookID_book(view)
+
+    searchBtn = Button(
+        root,
+        text=" Search ",
+        foreground="black",
+        background="white",
+        command=find,
+        font=(myFont, 9),
+    )
+    searchBtn.place(relx=0.525, rely=0.188)
+
+    refreshBtn = Button(
+        root,
+        text=" Refresh ",
+        foreground="black",
+        background="white",
+        command=refresh,
+        font=(myFont, 9),
+    )
+    refreshBtn.place(relx=0.585, rely=0.188)
+
+    Label(
+        root,
+        font=(myFont, 15),
+        text="Sort By : ",
+        background="#1A371B",
+        foreground="white",
+    ).place(relx=0.02, rely=0.652)
+    
+
     cursor.execute(
         "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id"
     )
     set = cursor.fetchall()
 
     view = ttk.Treeview(root, selectmode="browse")
-    view.grid(row=1, column=1, padx=20, pady=50)
+    view.place(relx=0.024, rely=0.25)
     view["columns"] = ("1", "2", "3", "4", "5", "6", "7", "8", "9")
     view["show"] = "headings"
     view.column("1", width=50)
-    view.column("2", width=190)
-    view.column("3", width=70)
-    view.column("4", width=70)
+    view.column("2", width=160)
+    view.column("3", width=115)
+    view.column("4", width=115)
     view.column("5", width=150)
     view.column("6", width=100)
-    view.column("7", width=170)
+    view.column("7", width=100)
     view.column("8", width=80)
     view.column("9", width=80)
     view.heading("1", text="ID")
     view.heading("2", text="Title")
     view.heading("3", text="Author First Name")
-    view.heading("4", text="Author First Name")
+    view.heading("4", text="Author Last Name")
     view.heading("5", text="Publisher")
     view.heading("6", text="ISBN")
     view.heading("7", text="Group")
@@ -660,42 +742,40 @@ def displayBooks(root):
 
     deleteBtn = Button(
         root,
-        text="Delete",
+        text=" Delete ",
         foreground="black",
         background="white",
         command=lambda: delete(view, view.selection()[0]),
-        font=(myFont, 13),
-        borderwidth=0,
+        font=(myFont, 10),
     )
-    deleteBtn.place(relx=0.8, rely=0.8)
+    deleteBtn.place(relx=0.915, rely=0.658)
 
-    authorBtn = Button(root, text = "Author", command=lambda:sortAuthor_book(view))
-    authorBtn.place(relx=0.6, rely=0.8)
+    idBtn = Button(root, text = " Book ID ", command=lambda:sortBookID_book(view), font=(myFont, 10))
+    idBtn.place(relx=0.11, rely=0.657)
 
-    publisherBtn = Button(root, text = "Publisher", command=lambda:sortPublisher_book(view))
-    publisherBtn.place(relx=0.5, rely=0.8)
+    titleBtn = Button(root, text = " Title ", command = lambda:sortTitle_book(view), font=(myFont, 10))
+    titleBtn.place(relx=0.18, rely=0.657)
 
-    idBtn = Button(root, text = "ID", command=lambda:sortBookID_book(view))
-    idBtn.place(relx=0.4, rely=0.8)
+    authorBtn = Button(root, text = " Author ", command=lambda:sortAuthor_book(view), font=(myFont, 10))
+    authorBtn.place(relx=0.227, rely=0.657)
 
-    titleBtn = Button(root, text = "Title", command = lambda:sortTitle_book(view))
-    titleBtn.place(relx=0.3, rely=0.8)
+    publisherBtn = Button(root, text = " Publisher ", command=lambda:sortPublisher_book(view), font=(myFont, 10))
+    publisherBtn.place(relx=0.287, rely=0.657)
 
-    availBtn = Button(root, text = "Available", command=lambda:sortStatusAvail_book(view))
-    availBtn.place(relx=0.2, rely=0.8)
+    availBtn = Button(root, text = " Available ", command=lambda:sortStatusAvail_book(view), font=(myFont, 10))
+    availBtn.place(relx=0.363, rely=0.657)
 
-    availBtn = Button(root, text = "Unavailable", command=lambda:sortStatusUnavail_book(view))
-    availBtn.place(relx=0.1, rely=0.8)
+    unavailBtn = Button(root, text = " Unavailable ", command=lambda:sortStatusUnavail_book(view), font=(myFont, 10))
+    unavailBtn.place(relx=0.436, rely=0.657)
 
     backBtn = Button(
         root,
-        text="Back",
+        text=" Back ",
         foreground="black",
         background="white",
         command=lambda: menuPage(root),
-        font=(myFont, 13),
-        borderwidth=0,
+        font=(myFont, 10),
     )
-    backBtn.place(relx=0.05, rely=0.03)
+    backBtn.place(relx=0.01, rely=0.02)
 
 # def displayTransaction(root):

@@ -212,3 +212,17 @@ def sortStatusUnavail_book(view):
         view.insert(
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
         )
+
+
+def searchTitle(view, title):
+    for item in view.get_children():
+        view.delete(item)
+    statement =  f"select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id WHERE b.title = '{title}'"
+    cursor.execute(statement)
+    
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
+        )
+

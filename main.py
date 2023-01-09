@@ -30,7 +30,7 @@ def main():
     root.resizable(False, False)
 
     # To fill in the window with widgets from frames.py
-    frames.menuPage(root)
+    frames.displayBooks(root)
 
     # To run the window
     root.mainloop()
