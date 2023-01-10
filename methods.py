@@ -56,7 +56,7 @@ def upload(root, id, title, author_name, publisher, isbn, group, status, damages
     cursor.execute(statment, data)
     conn.commit()
     print("inserted")
-    frames.menuPage(root)
+    frames.adminMenuPage(root)
 
 
 # create a dropdown with 'New' option
