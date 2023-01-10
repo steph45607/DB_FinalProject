@@ -2,6 +2,7 @@ import mysql.connector
 from frames import *
 from main import *
 from tkinter.messagebox import askyesno
+from datetime import date
 
 conn = mysql.connector.connect(
     host="35.238.148.78",
@@ -255,6 +256,19 @@ def searchBorrowerID_transaction(view, searched):
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
         )
 
+def searchUserID_user(view, searched):
+    id = searched.get()
+    for item in view.get_children():
+        view.delete(item)
+    statement =  f"SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id WHERE u.id = '{id}'"
+    cursor.execute(statement)
+    
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3])
+        )
+
 def refreshDisplay_book(searched, view):
     searched.set("")
     sortBookID_book(view)
@@ -262,6 +276,23 @@ def refreshDisplay_book(searched, view):
 def refreshDisplay_transaction(searched, view):
     searched.set("")
     sortTransID_transaction(view)
+
+def refreshDisplay_user(searched, view):
+    searched.set("")
+    sortUserID_users(view)
+
+def sortUserID_users(view):
+    for item in view.get_children():
+        view.delete(item)
+    
+    cursor.execute(
+        "SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id ORDER BY u.id ASC"
+    )
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
+        )
 
 def sortTransID_transaction(view):
     for item in view.get_children():
@@ -383,5 +414,10 @@ def isReturned(view, selected):
 
     confirm()
 
-
+def addTransactionMethod(bookView, userView, bookSelected, userSelected, dateSelected):
+    book = bookView.item(bookSelected)["values"][0]
+    user = userView.item(userSelected)["values"][0]
+    dateStr = dateSelected.strftime("%Y-%m-%d")
+    print(type(dateStr))
+    print(book, user, dateStr)
 
