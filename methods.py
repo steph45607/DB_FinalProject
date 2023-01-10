@@ -152,58 +152,6 @@ def deleteTransaction(view, selected):
 
     confirm()
 
-# def sortAuthor_book(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id ORDER BY p.name ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
-#         )
-
-# def sortBookID_book(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id ORDER BY b.id ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
-#         )
-
-# def sortTitle_book(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id ORDER BY b.title ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
-#         )
-
-# def sortPublisher_book(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id ORDER BY p.name ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
-#         )
-
 def sortStatusBooks(view, parameter, value):
     for item in view.get_children():
         view.delete(item)
@@ -229,18 +177,6 @@ def sortStatusTransaction(view, parameter, parameter2, value, order):
         view.insert(
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6]))
 
-# def sortStatusAvail_book(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id WHERE s.detail = 'available'"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
-#         )
 
 def sortStatusUnavail_book(view):
     for item in view.get_children():
@@ -332,18 +268,6 @@ def sortUsers(view, parameter, order):
             "", "end", values=(i[0], i[1], i[2], i[3])
         )
 
-# def sortUserID_users(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         f"SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id ORDER BY u.id ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3])
-#         )
 
 def sortTransaction(view, parameter, order):
     for item in view.get_children():
@@ -357,110 +281,6 @@ def sortTransaction(view, parameter, order):
         view.insert(
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
         )
-
-# def sortTransID_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id ORDER BY t.transaction_id ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortBorrowID_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id ORDER BY u.id ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortBorrowName_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id ORDER BY u.name ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortDateAsc_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id ORDER BY t.borrow_date ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortDateDes_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id ORDER BY t.borrow_date DESC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortDue_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id WHERE s.detail = 'overdue' ORDER BY t.due_date DESC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortReturned_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id WHERE s.detail = 'returned' ORDER BY t.borrow_date ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
-
-# def sortActive_transaction(view):
-#     for item in view.get_children():
-#         view.delete(item)
-    
-#     cursor.execute(
-#         "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id WHERE s.detail = 'active' ORDER BY t.borrow_date ASC"
-#     )
-#     set = cursor.fetchall()
-#     for i in set: #type:ignore
-#         view.insert(
-#             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
-#         )
 
 def isReturned(view, selected):
     def confirm():
