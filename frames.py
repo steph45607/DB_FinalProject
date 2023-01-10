@@ -1054,7 +1054,7 @@ def displayTransaction(root):
     )
     hasReturneddBtn.place(relx=0.815, rely=0.658)
 
-    idBtn = Button(root, text = " Transaction ID ", command=lambda:sortTransID_transaction(view), font=(myFont, 10))
+    idBtn = Button(root, text = " Transaction ID ", command=lambda:sortTransaction(view, "t.transaction_id", "DESC"), font=(myFont, 10))
     idBtn.place(relx=0.11, rely=0.657)
 
     borrowIDBtn = Button(root, text = " Borrower ID ", command = lambda:sortBorrowID_transaction(view), font=(myFont, 10))

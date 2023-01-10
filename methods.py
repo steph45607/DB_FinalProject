@@ -286,7 +286,20 @@ def sortUserID_users(view):
         view.delete(item)
     
     cursor.execute(
-        "SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id ORDER BY u.id ASC"
+        f"SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id ORDER BY u.id ASC"
+    )
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
+        )
+
+def sortTransaction(view, parameter, order):
+    for item in view.get_children():
+        view.delete(item)
+    
+    cursor.execute(
+        f"SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id ORDER BY {parameter} {order}"
     )
     set = cursor.fetchall()
     for i in set: #type:ignore
