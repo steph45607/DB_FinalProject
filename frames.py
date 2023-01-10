@@ -3,11 +3,12 @@
 from tkinter import *
 from tkinter import ttk
 import tkinter.font as font
-from tkcalendar import DateEntry
 from tkinter.messagebox import askyesno
 from main import *
 from methods import *
 import ttk
+
+from methods import add_three
 
 # Colors
 offWhite = "#FAF9F6"
@@ -692,7 +693,7 @@ def addTransaction(root):
     refreshBookBtn.place(relx=0.585, rely=0.188)
 
     cursor.execute(
-        "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id WHERE s.detail = 'available'"
+        "select b.id, b.title, a.firstName, a.lastName, p.name, b.isbn, g.group_name, s.detail, d.detail from book_details b join author_details a on b.author_id = a.id join publisher_details p on b.pub_id = p.id join group_details g on b.group_id = g.id join status_details s on b.status_id = s.id join damages_details d on b.damages_id = d.id"
     )
     books = cursor.fetchall()
 
@@ -742,7 +743,7 @@ def addTransaction(root):
         text=" Search ",
         foreground="black",
         background="white",
-        command=lambda:searchUserID_user(userView, searchUser),
+        command=lambda:searchBorrowerID_transaction(transactionView, searchUser),
         font=(myFont, 9),
     )
     searchTranBtn.place(relx=0.525, rely=0.488)
@@ -752,41 +753,40 @@ def addTransaction(root):
         text=" Refresh ",
         foreground="black",
         background="white",
-        command=lambda:refreshDisplay_user(searchUser, userView),
+        command=lambda:refreshDisplay_transaction(searchUser, transactionView),
         font=(myFont, 9),
     )
     refreshTranBtn.place(relx=0.585, rely=0.488)
 
     cursor.execute(
-        "SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id"
+        "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id"
     )
-    users = cursor.fetchall()
+    transactions = cursor.fetchall()
 
-    userView = ttk.Treeview(root, selectmode="browse", height=5)
-    userView.place(relx=0.024, rely=0.55)
-    userView["columns"] = ("1", "2", "3", "4")
-    userView["show"] = "headings"
-    userView.column("1", width=150)
-    userView.column("2", width=160)
-    userView.column("3", width=115)
-    userView.column("4", width=115)
-    userView.heading("1", text="ID")
-    userView.heading("2", text="Name")
-    userView.heading("3", text="Email")
-    userView.heading("4", text="Role")
+    transactionView = ttk.Treeview(root, selectmode="browse", height=5)
+    transactionView.place(relx=0.024, rely=0.55)
+    transactionView["columns"] = ("1", "2", "3", "4", "5", "6", "7", "8", "9")
+    transactionView["show"] = "headings"
+    transactionView.column("1", width=50)
+    transactionView.column("2", width=160)
+    transactionView.column("3", width=115)
+    transactionView.column("4", width=115)
+    transactionView.column("5", width=150)
+    transactionView.column("6", width=100)
+    transactionView.column("7", width=100)
+    transactionView.heading("1", text="ID")
+    transactionView.heading("2", text="Book Title")
+    transactionView.heading("3", text="Borrower ID")
+    transactionView.heading("4", text="Borrower Name")
+    transactionView.heading("5", text="Date")
+    transactionView.heading("6", text="Due")
+    transactionView.heading("7", text="Status")
 
-
-    for i in users:  # type: ignore
+    for i in transactions:  # type: ignore
         # print(i)
-        userView.insert(
-            "", "end", values=(i[0], i[1], i[2], i[3])
+        transactionView.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
         )
-    
-    calendar = DateEntry(root, selectmode = 'day')
-    calendar.place(relx = 0.1, rely= 0.75)
-    print(type(calendar.get_date()))
-    # dt = calendar.get_date()
-    # dateSelected = dt.strftime("%Y-%m-%d")
 
     backBtn = Button(
         root,
@@ -797,16 +797,6 @@ def addTransaction(root):
         font=(myFont, 10),
     )
     backBtn.place(relx=0.01, rely=0.02)
-
-    addBtn = Button(
-        root,
-        text=" Add ",
-        foreground="black",
-        background="white",
-        command=lambda: addTransactionMethod(bookView,userView, bookView.selection()[0], userView.selection()[0], calendar.get_date()),
-        font=(myFont, 10),
-    )
-    addBtn.place(relx=0.915, rely=0.658)
 
 def displayBooks(root):
     myFont = font.Font(family="Helvetica")
@@ -841,7 +831,7 @@ def displayBooks(root):
 
     def refresh(searchVar):
         searchVar.set("")
-        sortBookID_book(view)
+        sortBooks(view, "b.id", "ASC")
 
     searchBtn = Button(
         root,
@@ -858,7 +848,7 @@ def displayBooks(root):
         text=" Refresh ",
         foreground="black",
         background="white",
-        command=lambda:sortBookID_book(view),
+        command=lambda:sortBooks(view, "b.id", "ASC"),
         font=(myFont, 9),
     )
     refreshBtn.place(relx=0.585, rely=0.188)
@@ -916,22 +906,22 @@ def displayBooks(root):
     )
     deleteBtn.place(relx=0.915, rely=0.658)
 
-    idBtn = Button(root, text = " Book ID ", command=lambda:sortBookID_book(view), font=(myFont, 10))
+    idBtn = Button(root, text = " Book ID ", command=lambda:sortBooks(view, "b.id", "ASC"), font=(myFont, 10))
     idBtn.place(relx=0.11, rely=0.657)
 
-    titleBtn = Button(root, text = " Title ", command = lambda:sortTitle_book(view), font=(myFont, 10))
+    titleBtn = Button(root, text = " Title ", command = lambda:sortBooks(view, "b.title", "ASC"), font=(myFont, 10))
     titleBtn.place(relx=0.18, rely=0.657)
 
-    authorBtn = Button(root, text = " Author ", command=lambda:sortAuthor_book(view), font=(myFont, 10))
+    authorBtn = Button(root, text = " Author ", command=lambda:sortBooks(view, "a.firstName", "ASC"), font=(myFont, 10))
     authorBtn.place(relx=0.227, rely=0.657)
 
-    publisherBtn = Button(root, text = " Publisher ", command=lambda:sortPublisher_book(view), font=(myFont, 10))
+    publisherBtn = Button(root, text = " Publisher ", command=lambda:sortBooks(view, "p.name", "ASC"), font=(myFont, 10))
     publisherBtn.place(relx=0.287, rely=0.657)
 
-    availBtn = Button(root, text = " Available ", command=lambda:sortStatusAvail_book(view), font=(myFont, 10))
+    availBtn = Button(root, text = " Available ", command=lambda:sortStatusBooks(view, "s.detail", "available"), font=(myFont, 10))
     availBtn.place(relx=0.363, rely=0.657)
 
-    unavailBtn = Button(root, text = " Unavailable ", command=lambda:sortStatusUnavail_book(view), font=(myFont, 10))
+    unavailBtn = Button(root, text = " Unavailable ", command=lambda:sortStatusBooks(view, "s.detail", "unavailable"), font=(myFont, 10))
     unavailBtn.place(relx=0.436, rely=0.657)
 
     backBtn = Button(
@@ -1054,28 +1044,28 @@ def displayTransaction(root):
     )
     hasReturneddBtn.place(relx=0.815, rely=0.658)
 
-    idBtn = Button(root, text = " Transaction ID ", command=lambda:sortTransaction(view, "t.transaction_id", "DESC"), font=(myFont, 10))
+    idBtn = Button(root, text = " Transaction ID ", command=lambda:sortTransaction(view, "t.transaction_id", "ASC"), font=(myFont, 10))
     idBtn.place(relx=0.11, rely=0.657)
 
-    borrowIDBtn = Button(root, text = " Borrower ID ", command = lambda:sortBorrowID_transaction(view), font=(myFont, 10))
+    borrowIDBtn = Button(root, text = " Borrower ID ", command = lambda:sortTransaction(view, "u.id", "ASC"), font=(myFont, 10))
     borrowIDBtn.place(relx=0.18, rely=0.657)
 
-    borrowNameBtn = Button(root, text = " Borrower Name ", command=lambda:sortBorrowName_transaction(view), font=(myFont, 10))
+    borrowNameBtn = Button(root, text = " Borrower Name ", command=lambda:sortTransaction(view, "u.name", "ASC"), font=(myFont, 10))
     borrowNameBtn.place(relx=0.227, rely=0.657)
 
-    dateOldBtn = Button(root, text = " Borrow Date Oldest", command=lambda:sortDateAsc_transaction(view), font=(myFont, 10))
+    dateOldBtn = Button(root, text = " Borrow Date Oldest", command=lambda:sortTransaction(view, "t.borrow_date", "DESC"), font=(myFont, 10))
     dateOldBtn.place(relx=0.287, rely=0.657)
 
-    dateNewBtn = Button(root, text = " Borrow Date Latest ", command=lambda:sortDateDes_transaction(view), font=(myFont, 10))
+    dateNewBtn = Button(root, text = " Borrow Date Latest ", command=lambda:sortTransaction(view, "t.borrow_date", "ASC"), font=(myFont, 10))
     dateNewBtn.place(relx=0.363, rely=0.657)
 
-    dueBtn = Button(root, text = " Due Transactions ", command=lambda:sortDue_transaction(view), font=(myFont, 10))
+    dueBtn = Button(root, text = " Overdue Transactions ", command=lambda:sortStatusTransaction(view, "s.detail", "t.due_date","overdue", "ASC"), font=(myFont, 10))
     dueBtn.place(relx=0.436, rely=0.657)
 
-    returnedBtn = Button(root, text = " Returned Transactions ", command=lambda:sortReturned_transaction(view), font=(myFont, 10))
+    returnedBtn = Button(root, text = " Returned Transactions ", command=lambda:sortStatusTransaction(view, "s.detail", "t.borrow_status", "complete", "ASC"), font=(myFont, 10))
     returnedBtn.place(relx=0.536, rely=0.657)
 
-    activeBtn = Button(root, text = " Active Transactions ", command=lambda:sortActive_transaction(view), font=(myFont, 10))
+    activeBtn = Button(root, text = " Active Transactions ", command=lambda:sortStatusTransaction(view, "s.detail", "t.borrow_date", "active", "ASC"), font=(myFont, 10))
     activeBtn.place(relx=0.636, rely=0.657)
 
     backBtn = Button(
