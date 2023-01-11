@@ -424,7 +424,7 @@ def adminMenuPage(root):
         command=lambda:displayTransaction(root),
         borderwidth=0,
     )
-    transactionBtn.place(relx=0.23, rely=0.24, width=240)
+    transactionBtn.place(relx=0.23, rely=0.22, width=240)
 
     # add transaction btn
     global addTransBtnPhoto
@@ -440,7 +440,7 @@ def adminMenuPage(root):
         command=lambda:addTransaction(root),
         borderwidth=0,
     )
-    addTransactionBtn.place(relx=0.23, rely=0.4, width=240)
+    addTransactionBtn.place(relx=0.23, rely=0.38, width=240)
 
     # view books btn
     global bookBtnPhoto
@@ -456,7 +456,7 @@ def adminMenuPage(root):
         command=lambda: displayBooks(root),
         borderwidth=0,
     )
-    bookBtn.place(relx=0.5, rely=0.24, width=240)
+    bookBtn.place(relx=0.5, rely=0.22, width=240)
 
     # add books btn
     global addbookBtnPhoto
@@ -472,7 +472,7 @@ def adminMenuPage(root):
         command=lambda: addBooks(root),
         borderwidth=0,
     )  # command=lambda:addBooks(root)
-    addBookBtn.place(relx=0.5, rely=0.4, width=240)
+    addBookBtn.place(relx=0.5, rely=0.38, width=240)
 
     # view user btn
     global viewUserBtnPhoto
@@ -487,14 +487,41 @@ def adminMenuPage(root):
         font=(myFont, 15),
         command=lambda:displayUsers(root),
         borderwidth=0,
-    )  # command= for view users
-    viewUserBtn.place(relx=0.36, rely=0.56, width=240)
+    )
+    viewUserBtn.place(relx=0.36, rely=0.54, width=240)
 
-    authorBtn = Button(root, text = "Author List", command=lambda:displayAuthor(root))
-    authorBtn.place(relx = 0.3, rely = 0.9)
+    # view author btn
+    global viewAuthorBtnPhoto
+    viewAuthorBtnPhoto = PhotoImage(file="images/viewAuthor.png").subsample(8, 8)
+    viewAuthorBtn = Button(
+        root,
+        text=" View Author ",
+        image=viewAuthorBtnPhoto,
+        compound=LEFT,
+        foreground="black",
+        background="white",
+        font=(myFont, 15),
+        command=lambda:displayAuthor(root),
+        borderwidth=0,
+    ) 
+    viewAuthorBtn.place(relx=0.11, rely=0.54, width=240)
+    
+    # view publisher btn
+    global viewPubBtnPhoto
+    viewPubBtnPhoto = PhotoImage(file="images/viewPublisher.png").subsample(8, 8)
+    viewPubBtn = Button(
+        root,
+        text=" View Publisher ",
+        image=viewPubBtnPhoto,
+        compound=LEFT,
+        foreground="black",
+        background="white",
+        font=(myFont, 15),
+        command=lambda:displayPublisher(root),
+        borderwidth=0,
+    ) 
+    viewPubBtn.place(relx=0.61, rely=0.54, width=240)
 
-    publisherBtn = Button(root, text = "Publisher List", command=lambda:displayPublisher(root))
-    publisherBtn.place(relx = 0.4, rely = 0.9)
 
     # confirmation popup message if want to log out
     def confirm(root):
@@ -520,44 +547,49 @@ def adminMenuPage(root):
 
 def popup_three(root, text1, text2, text3, table):
     popup = Toplevel(root)
-    popup.geometry("450x250")
-    popup.config(bg="#2C602E")
+    popup.resizable(False, False)
+
+    popup.geometry("500x300")
+    popup.config(bg="#1A371B")
 
     Label(
         popup,
-        font=("Helvetica Bold", 23),
-        text=f" Add new {table} value",
+        font=("Helvetica Bold", 18),
+        text=f" Add to {table} ",
         background=myColor,
         foreground="white",
-    ).place(relx=0.38, rely=0.1)
+    ).place(relx=0.24, rely=0.1)
 
     value1_prompt = Label(
         popup, text=text1, font=("Helvetica", 15), bg=myColor, fg=offWhite
     )
-    value1_prompt.place(relx=0.1, rely=0.3, anchor=W)
+    value1_prompt.place(relx=0.06, rely=0.3, anchor=W)
     value1 = Entry(popup, width=20)
-    value1.place(relx=0.3, rely=0.3, width=500, anchor=W)
+    value1.place(relx=0.3, rely=0.3, width=300, anchor=W)
 
     value2_prompt = Label(
         popup, text=text2, font=("Helvetica", 15), bg=myColor, fg=offWhite
     )
-    value2_prompt.place(relx=0.1, rely=0.5, anchor=W)
+    value2_prompt.place(relx=0.06, rely=0.4, anchor=W)
     value2 = Entry(popup, width=20)
-    value2.place(relx=0.3, rely=0.5, width=500, anchor=W)
+    value2.place(relx=0.3, rely=0.4, width=300, anchor=W)
 
     value3_prompt = Label(
         popup, text=text3, font=("Helvetica", 15), bg=myColor, fg=offWhite
     )
-    value3_prompt.place(relx=0.1, rely=0.7, anchor=W)
+    value3_prompt.place(relx=0.06, rely=0.5, anchor=W)
     value3 = Entry(popup, width=20)
-    value3.place(relx=0.3, rely=0.7, width=500, anchor=W)
+    value3.place(relx=0.3, rely=0.5, width=300, anchor=W)
 
     submit = Button(
         popup,
-        text="Create",
+        text=" Enter ",
         command=lambda: add_three(popup, table, value1, value2, value3),
+        font=("Helvetica, 15"),
+        foreground="black",
+        background="#BDCBBD"
     )
-    submit.place(relx=0.3, rely=0.9)
+    submit.place(relx=0.3, rely=0.6)
 
 
 def addBooks(root):
@@ -579,22 +611,6 @@ def addBooks(root):
         background=myColor,
         foreground="white",
     ).place(relx=0.38, rely=0.1)
-
-    # bookID input
-    # bookIDVar = StringVar()
-    # Label(
-    #     root,
-    #     font=(myFont, 15),
-    #     text="Book ID   : ",
-    #     background=myColor,
-    #     foreground="white",
-    # ).place(relx=0.17, rely=0.18)
-    # id = Entry(
-    #     root,
-    #     textvariable=bookIDVar,
-    #     font=(myFont, 13, "normal"),
-    # )
-    # id.place(relx=0.28, rely=0.205, width=500, anchor=W)
 
     # title Input
     titleVar = StringVar()
@@ -707,17 +723,6 @@ def addBooks(root):
     )
     subButton.place(relx=0.28, rely=0.7, anchor=W)
 
-    # i cant fnd the command for the display button but here it is tinggal nambahin the command
-    displayButton = Button(
-        root,
-        text=" Display ",
-        foreground=myColor,
-        background="white",
-        font=(myFont, 15),
-    )
-    displayButton.place(relx=0.38, rely=0.7, anchor=W)
-
-    # havent added any commands, but this button to return to prev page
     backBtn = Button(
         root,
         text=" Back ",
@@ -736,7 +741,7 @@ def addBooks(root):
         font=(myFont, 15),
         command=lambda: addBooks(root),
     )
-    refreshBtn.place(relx=0.48, rely=0.7, anchor=W)
+    refreshBtn.place(relx=0.38, rely=0.7, anchor=W)
 
 def addTransaction(root):
     myFont = font.Font(family="Helvetica")
@@ -763,7 +768,7 @@ def addTransaction(root):
         text="Search By Title : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.02, rely=0.19)
+    ).place(relx=0.02, rely=0.185)
     searchBook = StringVar()
     
     searchInput = Entry(root, textvariable=searchBook, font=(myFont, 13, "normal"))
@@ -822,17 +827,17 @@ def addTransaction(root):
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
         )
     
-        Label(
+    Label(
         root,
         font=(myFont, 15),
-        text="Search By Borrwer ID : ",
+        text="Search By Borrower ID : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.02, rely=0.49)
+    ).place(relx=0.02, rely=0.485)
     searchUser = StringVar()
     
     searchInput = Entry(root, textvariable=searchUser, font=(myFont, 13, "normal"))
-    searchInput.place(relx=0.19, rely=0.49, width=330)
+    searchInput.place(relx=0.25, rely=0.49, width=200)
 
     searchTranBtn = Button(
         root,
@@ -842,7 +847,7 @@ def addTransaction(root):
         command=lambda:searchUserID_user(userView, searchUser),
         font=(myFont, 9),
     )
-    searchTranBtn.place(relx=0.525, rely=0.488)
+    searchTranBtn.place(relx=0.455, rely=0.488)
 
     refreshTranBtn = Button(
         root,
@@ -852,7 +857,7 @@ def addTransaction(root):
         command=lambda:refreshDisplay_user(searchUser, userView),
         font=(myFont, 9),
     )
-    refreshTranBtn.place(relx=0.585, rely=0.488)
+    refreshTranBtn.place(relx=0.515, rely=0.488)
 
     cursor.execute(
         "SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id"
@@ -863,9 +868,9 @@ def addTransaction(root):
     userView.place(relx=0.024, rely=0.55)
     userView["columns"] = ("1", "2", "3", "4")
     userView["show"] = "headings"
-    userView.column("1", width=150)
-    userView.column("2", width=160)
-    userView.column("3", width=115)
+    userView.column("1", width=80)
+    userView.column("2", width=180)
+    userView.column("3", width=180)
     userView.column("4", width=115)
     userView.heading("1", text="ID")
     userView.heading("2", text="Name")
@@ -877,19 +882,27 @@ def addTransaction(root):
         userView.insert(
             "", "end", values=(i[0], i[1], i[2], i[3])
         )
-    
+
+    Label(
+        root,
+        font=(myFont, 15),
+        text="Borrow Date : ",
+        background="#1A371B",
+        foreground="white",
+    ).place(relx = 0.6, rely=0.488)
+
     calendar = DateEntry(root, selectmode = 'day')
-    calendar.place(relx = 0.1, rely= 0.85)
+    calendar.place(relx = 0.73, rely=0.498, width=160)
 
     addBtn = Button(
         root,
-        text=" Add ",
+        text=" Add Transaction ",
         foreground="black",
-        background="white",
+        background="#BDCBBD",
         command=lambda: addTransactionMethod(bookView,userView, bookView.selection()[0], userView.selection()[0], calendar.get_date()),
-        font=(myFont, 10),
+        font=(myFont, 13),
     )
-    addBtn.place(relx=0.915, rely=0.658)
+    addBtn.place(relx=0.03, rely=0.8)
 
     backBtn = Button(
         root,
@@ -1175,14 +1188,14 @@ def userDisplayGroups(root):
     Label(
         root,
         font=(myFont, 15),
-        text="Search By Group : ",
+        text="Search By Group Name : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.02, rely=0.18)
+    ).place(relx=0.14, rely=0.183)
     searchVar = StringVar()
     
     searchInput = Entry(root, textvariable=searchVar, font=(myFont, 13, "normal"))
-    searchInput.place(relx=0.19, rely=0.19, width=330)
+    searchInput.place(relx=0.3725, rely=0.19, width=330)
 
     searchBtn = Button(
         root,
@@ -1192,7 +1205,7 @@ def userDisplayGroups(root):
         command=lambda:searchGroup(view, searchVar),
         font=(myFont, 9),
     )
-    searchBtn.place(relx=0.525, rely=0.188)
+    searchBtn.place(relx=0.71, rely=0.188)
 
     refreshBtn = Button(
         root,
@@ -1202,7 +1215,7 @@ def userDisplayGroups(root):
         command=lambda:sortGroups(view, "id", "ASC"),
         font=(myFont, 9),
     )
-    refreshBtn.place(relx=0.585, rely=0.188)
+    refreshBtn.place(relx=0.77, rely=0.188)
     
 
     cursor.execute(
@@ -1211,12 +1224,12 @@ def userDisplayGroups(root):
     set = cursor.fetchall()
 
     view = ttk.Treeview(root, selectmode="browse")
-    view.place(relx=0.024, rely=0.25)
+    view.place(relx=0.13, rely=0.25)
     view["columns"] = ("1", "2", "3")
     view["show"] = "headings"
     view.column("1", width=100)
-    view.column("2", width=150)
-    view.column("3", width=150)
+    view.column("2", width=300)
+    view.column("3", width=300)
     view.heading("1", text="Group ID")
     view.heading("2", text="Group Name")
     view.heading("3", text="Location")
@@ -1400,7 +1413,7 @@ def displayUsers(root):
         text="User List",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.38, rely=0.06)
+    ).place(relx=0.41, rely=0.06)
 
     Label(
         root,
@@ -1408,11 +1421,11 @@ def displayUsers(root):
         text="Search By User ID : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.09, rely=0.183)
+    ).place(relx=0.13, rely=0.183)
     searchVar = StringVar()
     
     searchInput = Entry(root, textvariable=searchVar, font=(myFont, 13, "normal"))
-    searchInput.place(relx=0.3225, rely=0.19, width=330)
+    searchInput.place(relx=0.3525, rely=0.19, width=330)
 
     searchBtn = Button(
         root,
@@ -1422,7 +1435,7 @@ def displayUsers(root):
         command=lambda:searchUserID_user(view, searchVar),
         font=(myFont, 9),
     )
-    searchBtn.place(relx=0.66, rely=0.188)
+    searchBtn.place(relx=0.69, rely=0.188)
 
     refreshBtn = Button(
         root,
@@ -1432,7 +1445,7 @@ def displayUsers(root):
         command=lambda:refreshDisplay_user(searchVar, view),
         font=(myFont, 9),
     )
-    refreshBtn.place(relx=0.72, rely=0.188)
+    refreshBtn.place(relx=0.75, rely=0.188)
 
     Label(
         root,
@@ -1440,7 +1453,7 @@ def displayUsers(root):
         text="Sort By : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.09, rely=0.652)
+    ).place(relx=0.13, rely=0.652)
     
 
     cursor.execute(
@@ -1449,13 +1462,13 @@ def displayUsers(root):
     set = cursor.fetchall()
 
     view = ttk.Treeview(root, selectmode="browse")
-    view.place(relx=0.08, rely=0.25)
+    view.place(relx=0.12, rely=0.25)
     view["columns"] = ("1", "2", "3", "4")
     view["show"] = "headings"
-    view.column("1", width=50)
-    view.column("2", width=180)
-    view.column("3", width=115)
-    view.column("4", width=180)
+    view.column("1", width=100)
+    view.column("2", width=200)
+    view.column("3", width=200)
+    view.column("4", width=200)
     view.heading("1", text="ID")
     view.heading("2", text="Name")
     view.heading("3", text="Email")
@@ -1467,20 +1480,20 @@ def displayUsers(root):
             "", "end", values=(i[0], i[1], i[2], i[3])
         )
 
-    idBtn = Button(root, text = "User ID", command=lambda:sortUsers(view, "u.id", "ASC"), font=(myFont, 10))
-    idBtn.place(relx=0.19, rely=0.657)
+    idBtn = Button(root, text = " User ID ", command=lambda:sortUsers(view, "u.id", "ASC"), font=(myFont, 10))
+    idBtn.place(relx=0.22, rely=0.657)
 
-    borrowIDBtn = Button(root, text = "Name", command = lambda:sortUsers(view, "u.name", "ASC"), font=(myFont, 10))
-    borrowIDBtn.place(relx=0.29, rely=0.657)
+    nameBtn = Button(root, text = " Name ", command = lambda:sortUsers(view, "u.name", "ASC"), font=(myFont, 10))
+    nameBtn.place(relx=0.29, rely=0.657)
 
-    borrowNameBtn = Button(root, text = "Students", command=lambda:sortUserRoles(view, "r.role_name", "student"), font=(myFont, 10))
-    borrowNameBtn.place(relx=0.38, rely=0.657)
+    studentsBtn = Button(root, text = " Students ", command=lambda:sortUserRoles(view, "r.role_name", "student"), font=(myFont, 10))
+    studentsBtn.place(relx=0.35, rely=0.657)
 
-    dateOldBtn = Button(root, text = "Teacher",command=lambda:sortUserRoles(view, "r.role_name", "teacher") , font=(myFont, 10))
-    dateOldBtn.place(relx=0.493, rely=0.657)
+    teacherBtn = Button(root, text = " Teacher ",command=lambda:sortUserRoles(view, "r.role_name", "teacher") , font=(myFont, 10))
+    teacherBtn.place(relx=0.43, rely=0.657)
 
-    dateNewBtn = Button(root, text = "Staff",command=lambda:sortUserRoles(view, "r.role_name", "staff") , font=(myFont, 10))
-    dateNewBtn.place(relx=0.625, rely=0.657)
+    staffBtn = Button(root, text = " Staff  ",command=lambda:sortUserRoles(view, "r.role_name", "staff") , font=(myFont, 10))
+    staffBtn.place(relx=0.505, rely=0.657)
 
     backBtn = Button(
         root,
@@ -1509,7 +1522,7 @@ def displayAuthor(root):
         text="Author List",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.38, rely=0.06)
+    ).place(relx=0.385, rely=0.06)
 
     Label(
         root,
@@ -1517,11 +1530,11 @@ def displayAuthor(root):
         text="Search By Author ID : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.09, rely=0.183)
+    ).place(relx=0.13, rely=0.183)
     searchVar = StringVar()
     
     searchInput = Entry(root, textvariable=searchVar, font=(myFont, 13, "normal"))
-    searchInput.place(relx=0.3225, rely=0.19, width=330)
+    searchInput.place(relx=0.3625, rely=0.19, width=330)
 
     searchBtn = Button(
         root,
@@ -1531,7 +1544,7 @@ def displayAuthor(root):
         command=lambda:searchAuthorID(view, searchVar),
         font=(myFont, 9),
     )
-    searchBtn.place(relx=0.66, rely=0.188)
+    searchBtn.place(relx=0.7, rely=0.188)
 
     refreshBtn = Button(
         root,
@@ -1541,7 +1554,7 @@ def displayAuthor(root):
         command=lambda:refreshDisplay_author(searchVar, view),
         font=(myFont, 9),
     )
-    refreshBtn.place(relx=0.72, rely=0.188)
+    refreshBtn.place(relx=0.76, rely=0.188)
 
     Label(
         root,
@@ -1549,7 +1562,7 @@ def displayAuthor(root):
         text="Sort By : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.09, rely=0.652)
+    ).place(relx=0.13, rely=0.652)
     
 
     cursor.execute(
@@ -1558,12 +1571,12 @@ def displayAuthor(root):
     set = cursor.fetchall()
 
     view = ttk.Treeview(root, selectmode="browse")
-    view.place(relx=0.08, rely=0.25)
+    view.place(relx=0.12, rely=0.25)
     view["columns"] = ("1", "2", "3")
     view["show"] = "headings"
-    view.column("1", width=50)
-    view.column("2", width=180)
-    view.column("3", width=115)
+    view.column("1", width=100)
+    view.column("2", width=300)
+    view.column("3", width=300)
     view.heading("1", text="ID")
     view.heading("2", text="First Name")
     view.heading("3", text="Last Name")
@@ -1576,13 +1589,13 @@ def displayAuthor(root):
         )
 
     idBtn = Button(root, text = "Author ID", command=lambda:sortAuthor(view, "id", "ASC"), font=(myFont, 10))
-    idBtn.place(relx=0.19, rely=0.657)
+    idBtn.place(relx=0.22, rely=0.657)
 
-    borrowIDBtn = Button(root, text = "First Name", command = lambda:sortAuthor(view, "firstName", "ASC"), font=(myFont, 10))
-    borrowIDBtn.place(relx=0.29, rely=0.657)
+    authorfirstBtn = Button(root, text = "First Name", command = lambda:sortAuthor(view, "firstName", "ASC"), font=(myFont, 10))
+    authorfirstBtn.place(relx=0.29, rely=0.657)
 
-    borrowNameBtn = Button(root, text = "Last Name", command=lambda:sortAuthor(view, "lastName", "ASC"), font=(myFont, 10))
-    borrowNameBtn.place(relx=0.38, rely=0.657)
+    authorlastBtn = Button(root, text = "Last Name", command=lambda:sortAuthor(view, "lastName", "ASC"), font=(myFont, 10))
+    authorlastBtn.place(relx=0.37, rely=0.657)
 
 
     backBtn = Button(
@@ -1620,11 +1633,11 @@ def displayPublisher(root):
         text="Search By Publisher ID : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.09, rely=0.183)
+    ).place(relx=0.13, rely=0.183)
     searchVar = StringVar()
     
     searchInput = Entry(root, textvariable=searchVar, font=(myFont, 13, "normal"))
-    searchInput.place(relx=0.3225, rely=0.19, width=330)
+    searchInput.place(relx=0.3625, rely=0.19, width=330)
 
     searchBtn = Button(
         root,
@@ -1634,7 +1647,7 @@ def displayPublisher(root):
         command=lambda:searchPubID(view, searchVar),
         font=(myFont, 9),
     )
-    searchBtn.place(relx=0.66, rely=0.188)
+    searchBtn.place(relx=0.7, rely=0.188)
 
     refreshBtn = Button(
         root,
@@ -1644,7 +1657,7 @@ def displayPublisher(root):
         command=lambda:refreshDisplay_pub(searchVar, view),
         font=(myFont, 9),
     )
-    refreshBtn.place(relx=0.72, rely=0.188)
+    refreshBtn.place(relx=0.76, rely=0.188)
 
     Label(
         root,
@@ -1652,7 +1665,7 @@ def displayPublisher(root):
         text="Sort By : ",
         background="#1A371B",
         foreground="white",
-    ).place(relx=0.09, rely=0.652)
+    ).place(relx=0.13, rely=0.652)
     
 
     cursor.execute(
@@ -1661,12 +1674,12 @@ def displayPublisher(root):
     set = cursor.fetchall()
 
     view = ttk.Treeview(root, selectmode="browse")
-    view.place(relx=0.08, rely=0.25)
+    view.place(relx=0.12, rely=0.25)
     view["columns"] = ("1", "2", "3")
     view["show"] = "headings"
-    view.column("1", width=50)
-    view.column("2", width=180)
-    view.column("3", width=115)
+    view.column("1", width=100)
+    view.column("2", width=300)
+    view.column("3", width=300)
     view.heading("1", text="ID")
     view.heading("2", text="Name")
     view.heading("3", text="Email")
@@ -1678,14 +1691,13 @@ def displayPublisher(root):
         )
 
     idBtn = Button(root, text = "Publisher ID", command=lambda:sortPublisher(view, "id", "ASC"), font=(myFont, 10))
-    idBtn.place(relx=0.19, rely=0.657)
+    idBtn.place(relx=0.23, rely=0.657)
 
     nameBtn = Button(root, text = "Name", command = lambda:sortPublisher(view, "name", "ASC"), font=(myFont, 10))
-    nameBtn.place(relx=0.29, rely=0.657)
+    nameBtn.place(relx=0.32, rely=0.657)
 
     emailBtn = Button(root, text = "Email", command = lambda:sortPublisher(view, "email", "ASC"), font=(myFont, 10))
-    emailBtn.place(relx=0.39, rely=0.657)
-
+    emailBtn.place(relx=0.375, rely=0.657)
 
     backBtn = Button(
         root,
