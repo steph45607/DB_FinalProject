@@ -346,6 +346,7 @@ def userMenuPage(root):
         foreground="black",
         background="white",
         font=(myFont, 18),
+        command=lambda: userDisplayGroups(root),
         borderwidth=0,
     )#command for view groups
     viewGroupsBtn.place(relx=0.5, rely=0.31, width=240)
@@ -1124,16 +1125,6 @@ def userDisplayBooks(root):
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
         )
 
-    deleteBtn = Button(
-        root,
-        text=" Delete ",
-        foreground="black",
-        background="white",
-        command=lambda: deleteBook(view, view.selection()[0]),
-        font=(myFont, 10),
-    )
-    deleteBtn.place(relx=0.915, rely=0.658)
-
     idBtn = Button(root, text = " Book ID ", command=lambda:sortBooks(view, "b.id", "ASC"), font=(myFont, 10))
     idBtn.place(relx=0.11, rely=0.657)
 
@@ -1151,6 +1142,90 @@ def userDisplayBooks(root):
 
     unavailBtn = Button(root, text = " Unavailable ", command=lambda:sortStatusBooks(view, "s.detail", "unavailable"), font=(myFont, 10))
     unavailBtn.place(relx=0.436, rely=0.657)
+
+    backBtn = Button(
+        root,
+        text=" Back ",
+        foreground="black",
+        background="white",
+        command=lambda: userMenuPage(root),
+        font=(myFont, 10),
+    )
+    backBtn.place(relx=0.01, rely=0.02)
+
+def userDisplayGroups(root):
+    myFont = font.Font(family="Helvetica")
+    cleanPage(root)
+
+    global background
+    background = PhotoImage(file="images/backgroundDisplay.png")
+
+    # Show image using label
+    backgroundlabel = Label(root, image=background, background="white")
+    backgroundlabel.place(x=-1, y=-1)
+
+    Label(
+        root,
+        font=("Helvetica Bold", 25),
+        text="Book Groups ",
+        background="#1A371B",
+        foreground="white",
+    ).place(relx=0.38, rely=0.06)
+
+    Label(
+        root,
+        font=(myFont, 15),
+        text="Search By Group : ",
+        background="#1A371B",
+        foreground="white",
+    ).place(relx=0.02, rely=0.18)
+    searchVar = StringVar()
+    
+    searchInput = Entry(root, textvariable=searchVar, font=(myFont, 13, "normal"))
+    searchInput.place(relx=0.19, rely=0.19, width=330)
+
+    searchBtn = Button(
+        root,
+        text=" Search ",
+        foreground="black",
+        background="white",
+        command=lambda:searchGroup(view, searchVar),
+        font=(myFont, 9),
+    )
+    searchBtn.place(relx=0.525, rely=0.188)
+
+    refreshBtn = Button(
+        root,
+        text=" Refresh ",
+        foreground="black",
+        background="white",
+        command=lambda:sortGroups(view, "id", "ASC"),
+        font=(myFont, 9),
+    )
+    refreshBtn.place(relx=0.585, rely=0.188)
+    
+
+    cursor.execute(
+        "select * from group_details"
+    )
+    set = cursor.fetchall()
+
+    view = ttk.Treeview(root, selectmode="browse")
+    view.place(relx=0.024, rely=0.25)
+    view["columns"] = ("1", "2", "3")
+    view["show"] = "headings"
+    view.column("1", width=100)
+    view.column("2", width=150)
+    view.column("3", width=150)
+    view.heading("1", text="Group ID")
+    view.heading("2", text="Group Name")
+    view.heading("3", text="Location")
+
+    for i in set:  # type: ignore
+        # print(i)
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
 
     backBtn = Button(
         root,

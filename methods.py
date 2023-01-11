@@ -259,6 +259,19 @@ def searchPubID(view, searched):
             "", "end", values=(i[0], i[1], i[2])
         )
 
+def searchGroup(view, searched):
+    group_name = searched.get()
+    for item in view.get_children():
+        view.delete(item)
+    statement =  f"SELECT * from group_details WHERE group_name = '{group_name}'"
+    cursor.execute(statement)
+    
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
+
 def refreshDisplay_book(searched, view):
     searched.set("")
     sortBooks(view, "b.id", "ASC")
@@ -357,6 +370,19 @@ def sortTransaction(view, parameter, order):
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
         )
 
+def sortGroups(view, parameter, order):
+    for item in view.get_children():
+        view.delete(item)
+    
+    cursor.execute(
+        f"select * from group_details ORDER BY {parameter} {order}"
+    )
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
+        
 def isReturned(view, selected):
     def confirm():
         answer = askyesno(
