@@ -1,7 +1,7 @@
 import mysql.connector
 from frames import *
 from main import *
-from tkinter.messagebox import askyesno
+from tkinter.messagebox import askyesno, showinfo
 from datetime import timedelta, date
 
 conn = mysql.connector.connect(
@@ -25,24 +25,30 @@ def searchBooks(table):
 
 
 # to upload hte books to book_details database
-def upload(root, id, title, author_name, publisher, isbn, group, status, damages):
-    id = id.get()
+def upload(root, title, author_name, publisher, isbn, group, status, damages):
+    queryID = "select id from book_details ORDER BY id DESC LIMIT 1;"
+    cursor.execute(queryID)
+    id = cursor.fetchall()
+    for i in id: # type: ignore
+        id = i[0] + 1
+
     title = title.get()
+
     author_name = author_name.get()
     author_id = check_dropdown_three(
-        root, "author_details", "firstName", author_name, "id", "firstName", "lastName"
+        root, "author_details", "firstName", "lastName", author_name, "id", "firstName", "lastName"
     )
 
     publisher = publisher.get()
     pub_id = check_dropdown_three(
-        root, "publisher_details", "name", publisher, "id", "name", "email"
+        root, "publisher_details", "name", "email", publisher, "id", "name", "email"
     )
 
     isbn = isbn.get()
 
     group = group.get()
     group_id = check_dropdown_three(
-        root, "group_details", "group_name", group, "id", "group_name", "location"
+        root, "group_details", "group_name", "location", group, "id", "group_name", "location"
     )
 
     status = status.get()
@@ -55,8 +61,7 @@ def upload(root, id, title, author_name, publisher, isbn, group, status, damages
     data = (id, title, author_id, pub_id, isbn, group_id, status_id, damages_id)
     cursor.execute(statment, data)
     conn.commit()
-    print("inserted")
-    frames.adminMenuPage(root)
+    showinfo("Data added to database", "Book Added")
 
 
 # create a dropdown with 'New' option
@@ -103,11 +108,11 @@ def add_three(root, table, value1, value2, value3):
 #     frames.close_win(root)
 
 
-def check_dropdown_three(root, table, parameter, value, text1, text2, text3):
+def check_dropdown_three(root, table, parameter1, parameter2, value, text1, text2, text3):
     if value == "new":
         frames.popup_three(root, text1, text2, text3, table)
     else:
-        statment = f"SELECT id FROM {table} WHERE {parameter} = '{value}'"
+        statment = f"SELECT id FROM {table} WHERE CONCAT({parameter1}, ' ', {parameter2}) = '{value}'"
         cursor.execute(statment)
         for i in cursor:  # type: ignore
             return i[0]
@@ -128,7 +133,6 @@ def deleteBook(view, selected):
         )
         if answer:
             query = "DELETE FROM book_details WHERE id=%s"
-            # print(view.item(selected['values']))
             select = view.item(selected)["values"][0]
             cursor.execute(query, (select,))
             conn.commit()
@@ -144,7 +148,6 @@ def deleteTransaction(view, selected):
         )
         if answer:
             query = "DELETE FROM transaction_details WHERE transaction_id=%s"
-            # print(view.item(selected['values']))
             select = view.item(selected)["values"][0]
             cursor.execute(query, (select,))
             conn.commit()
@@ -230,6 +233,32 @@ def searchUserID_user(view, searched):
             "", "end", values=(i[0], i[1], i[2], i[3])
         )
 
+def searchAuthorID(view, searched):
+    id = searched.get()
+    for item in view.get_children():
+        view.delete(item)
+    statement =  f"SELECT * FROM author_details WHERE id = '{id}'"
+    cursor.execute(statement)
+    
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
+
+def searchPubID(view, searched):
+    id = searched.get()
+    for item in view.get_children():
+        view.delete(item)
+    statement =  f"SELECT * FROM publisher_details WHERE id = '{id}'"
+    cursor.execute(statement)
+    
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
+
 def refreshDisplay_book(searched, view):
     searched.set("")
     sortBooks(view, "b.id", "ASC")
@@ -241,6 +270,14 @@ def refreshDisplay_transaction(searched, view):
 def refreshDisplay_user(searched, view):
     searched.set("")
     sortUsers(view, "u.id", "ASC")
+
+def refreshDisplay_pub(searched, view):
+    searched.set("")
+    sortPublisher(view, "id", "ASC")
+
+def refreshDisplay_author(searched, view):
+    searched.set("")
+    sortAuthor(view, "id", "ASC")
 
 def sortBooks(view, parameter, order):
     for item in view.get_children():
@@ -268,6 +305,44 @@ def sortUsers(view, parameter, order):
             "", "end", values=(i[0], i[1], i[2], i[3])
         )
 
+def sortAuthor(view, parameter, order):
+    for item in view.get_children():
+        view.delete(item)
+    
+    cursor.execute(
+        f"SELECT * FROM author_details ORDER BY {parameter} {order}"
+    )
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
+
+def sortPublisher(view, parameter, order):
+    for item in view.get_children():
+        view.delete(item)
+    
+    cursor.execute(
+        f"SELECT * FROM publisher_details ORDER BY {parameter} {order}"
+    )
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2])
+        )
+
+def sortUserRoles(view, parameter, value):
+    for item in view.get_children():
+        view.delete(item)
+    
+    cursor.execute(
+        f"SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id WHERE {parameter} = '{value}'"
+    )
+    set = cursor.fetchall()
+    for i in set: #type:ignore
+        view.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3])
+        )
 
 def sortTransaction(view, parameter, order):
     for item in view.get_children():
@@ -290,7 +365,6 @@ def isReturned(view, selected):
         )
         if answer:
             query = "UPDATE transaction_details SET borrow_status = 1 WHERE transaction_id = %s"
-            # print(view.item(selected['values']))
             select = view.item(selected)["values"][0]
             cursor.execute(query, (select,))
             conn.commit()
@@ -304,12 +378,10 @@ def addTransactionMethod(bookView, userView, bookSelected, userSelected, dateSel
     user = userView.item(userSelected)["values"][0]
     dateStr = dateSelected.strftime("%Y-%m-%d")
     due = dateSelected + timedelta(days=14)
-    print(book, user, dateStr, due)
 
     queryID = "select transaction_id from transaction_details ORDER BY transaction_id DESC LIMIT 1;"
     cursor.execute(queryID)
     id = cursor.fetchall()
-    print(id)
     for i in id: # type: ignore
         id = i[0] + 1
 
@@ -317,16 +389,17 @@ def addTransactionMethod(bookView, userView, bookSelected, userSelected, dateSel
     data = (id, book, user, dateStr, due, 0)
     cursor.execute(query, data)
     conn.commit()
+    showinfo("Data added to database", "Transaction Added")
 
 def checkOverdue():
-    queryStatus = "SELECT transaction_id, due_date FROM transaction_details WHERE borrow_status = 0"
+    queryStatus = "SELECT transaction_id, due_date FROM transaction_details WHERE borrow_status = 0 "
     cursor.execute(queryStatus)
     activeID = cursor.fetchall()
-    print(activeID)
-    print(date.today())
+
 
     for i in activeID: # type: ignore
-        print(i[1])
         if i[1] < date.today():
-            queryOverdue = f"UPDATE transaction_details set borrow_status = 3 WHERE transaction_id = {i[1]}"
-            print('change')
+            queryOverdue = f"UPDATE transaction_details set borrow_status = 2 WHERE transaction_id = {i[0]}"
+            cursor.execute(queryOverdue)
+            conn.commit()
+
