@@ -2,7 +2,7 @@ import mysql.connector
 from frames import *
 from main import *
 from tkinter.messagebox import askyesno
-from datetime import date
+from datetime import timedelta, date
 
 conn = mysql.connector.connect(
     host="35.238.148.78",
@@ -65,7 +65,7 @@ def dropDownWithNew(table):
     choose = ["new"]
     count = cursor.fetchall()
     for row in count:  # type: ignore
-        choose.append(row[1])
+        choose.append(row[1] + " " + row[2])
     return choose
 
 
@@ -289,12 +289,13 @@ def isReturned(view, selected):
             message="The book has been returned?",
         )
         if answer:
-            query = "UPDATE transaction_detail SET borrow_status = 'returned' WHERE transaction_id = %s"
+            query = "UPDATE transaction_details SET borrow_status = 1 WHERE transaction_id = %s"
             # print(view.item(selected['values']))
             select = view.item(selected)["values"][0]
             cursor.execute(query, (select,))
             conn.commit()
             view.delete(selected)
+            sortTransaction(view, "transaction_id", "ASC")
 
     confirm()
 
@@ -302,6 +303,30 @@ def addTransactionMethod(bookView, userView, bookSelected, userSelected, dateSel
     book = bookView.item(bookSelected)["values"][0]
     user = userView.item(userSelected)["values"][0]
     dateStr = dateSelected.strftime("%Y-%m-%d")
-    print(type(dateStr))
-    print(book, user, dateStr)
+    due = dateSelected + timedelta(days=14)
+    print(book, user, dateStr, due)
 
+    queryID = "select transaction_id from transaction_details ORDER BY transaction_id DESC LIMIT 1;"
+    cursor.execute(queryID)
+    id = cursor.fetchall()
+    print(id)
+    for i in id: # type: ignore
+        id = i[0] + 1
+
+    query = "INSERT INTO transaction_details VALUES (%s, %s, %s, %s, %s, %s)"
+    data = (id, book, user, dateStr, due, 0)
+    cursor.execute(query, data)
+    conn.commit()
+
+def checkOverdue():
+    queryStatus = "SELECT transaction_id, due_date FROM transaction_details WHERE borrow_status = 0"
+    cursor.execute(queryStatus)
+    activeID = cursor.fetchall()
+    print(activeID)
+    print(date.today())
+
+    for i in activeID: # type: ignore
+        print(i[1])
+        if i[1] < date.today():
+            queryOverdue = f"UPDATE transaction_details set borrow_status = 3 WHERE transaction_id = {i[1]}"
+            print('change')

@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.font as font
 from tkinter.messagebox import askyesno
+from tkcalendar import DateEntry
 from main import *
 from methods import *
 import ttk
@@ -831,7 +832,7 @@ def addTransaction(root):
         text=" Search ",
         foreground="black",
         background="white",
-        command=lambda:searchBorrowerID_transaction(transactionView, searchUser),
+        command=lambda:searchUserID_user(userView, searchUser),
         font=(myFont, 9),
     )
     searchTranBtn.place(relx=0.525, rely=0.488)
@@ -841,40 +842,49 @@ def addTransaction(root):
         text=" Refresh ",
         foreground="black",
         background="white",
-        command=lambda:refreshDisplay_transaction(searchUser, transactionView),
+        command=lambda:refreshDisplay_user(searchUser, userView),
         font=(myFont, 9),
     )
     refreshTranBtn.place(relx=0.585, rely=0.488)
 
     cursor.execute(
-        "SELECT t.transaction_id, b.title, u.id, u.name, t.borrow_date, t.due_date, s.detail FROM transaction_details t JOIN book_details b ON t.book_id = b.id JOIN user_details u ON t.borrower_id = u.id JOIN transactionStatus_details s ON t.borrow_status = s.id"
+        "SELECT u.id, u.name, u.email, r.role_name FROM user_details u JOIN role_details r ON u.role_id = r.id"
     )
-    transactions = cursor.fetchall()
+    users = cursor.fetchall()
 
-    transactionView = ttk.Treeview(root, selectmode="browse", height=5)
-    transactionView.place(relx=0.024, rely=0.55)
-    transactionView["columns"] = ("1", "2", "3", "4", "5", "6", "7", "8", "9")
-    transactionView["show"] = "headings"
-    transactionView.column("1", width=50)
-    transactionView.column("2", width=160)
-    transactionView.column("3", width=115)
-    transactionView.column("4", width=115)
-    transactionView.column("5", width=150)
-    transactionView.column("6", width=100)
-    transactionView.column("7", width=100)
-    transactionView.heading("1", text="ID")
-    transactionView.heading("2", text="Book Title")
-    transactionView.heading("3", text="Borrower ID")
-    transactionView.heading("4", text="Borrower Name")
-    transactionView.heading("5", text="Date")
-    transactionView.heading("6", text="Due")
-    transactionView.heading("7", text="Status")
+    userView = ttk.Treeview(root, selectmode="browse", height=5)
+    userView.place(relx=0.024, rely=0.55)
+    userView["columns"] = ("1", "2", "3", "4")
+    userView["show"] = "headings"
+    userView.column("1", width=150)
+    userView.column("2", width=160)
+    userView.column("3", width=115)
+    userView.column("4", width=115)
+    userView.heading("1", text="ID")
+    userView.heading("2", text="Name")
+    userView.heading("3", text="Email")
+    userView.heading("4", text="Role")
 
-    for i in transactions:  # type: ignore
+
+    for i in users:  # type: ignore
         # print(i)
-        transactionView.insert(
-            "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6])
+        userView.insert(
+            "", "end", values=(i[0], i[1], i[2], i[3])
         )
+    
+    calendar = DateEntry(root, selectmode = 'day')
+    calendar.place(relx = 0.1, rely= 0.85)
+    print(type(calendar.get_date()))
+
+    addBtn = Button(
+        root,
+        text=" Add ",
+        foreground="black",
+        background="white",
+        command=lambda: addTransactionMethod(bookView,userView, bookView.selection()[0], userView.selection()[0], calendar.get_date()),
+        font=(myFont, 10),
+    )
+    addBtn.place(relx=0.915, rely=0.658)
 
     backBtn = Button(
         root,
@@ -1151,6 +1161,7 @@ def userDisplayBooks(root):
     backBtn.place(relx=0.01, rely=0.02)
 
 def displayTransaction(root):
+    checkOverdue()
     myFont = font.Font(family="Helvetica")
     cleanPage(root)
 
