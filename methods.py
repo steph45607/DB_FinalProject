@@ -85,12 +85,18 @@ def dropDown(table):
 
 
 def add_three(root, table, value1, value2, value3):
-    value1 = value1.get()
+    queryID = f"select {value1} from {table} ORDER BY {value1} DESC LIMIT 1;"
+    cursor.execute(queryID)
+    id = cursor.fetchall()
+    for i in id: # type: ignore
+        id = i[0] + 1
+    
+    # value1 = value1.get()
     value2 = value2.get()
     value3 = value3.get()
 
     statment = f"INSERT INTO {table} VALUES (%s, %s, %s)"
-    data = (value1, value2, value3)
+    data = (id, value2, value3)
     cursor.execute(statment, data)
     conn.commit()
 
@@ -117,13 +123,18 @@ def check_dropdown_three(root, table, parameter1, parameter2, value, text1, text
         for i in cursor:  # type: ignore
             return i[0]
 
-
 def check_dropdown_two(table, parameter, value):
     statment = f"SELECT id FROM {table} WHERE {parameter} = '{value}'"
     cursor.execute(statment)
     for i in cursor:  # type: ignore
         return i[0]
 
+def refreshAddBook(root, title, isbn):
+    title = title.get()
+    isbn = isbn.get()
+    print(title," and " ,isbn)
+    # print(title.get())
+    frames.addBooks(root, title, isbn)
 
 def deleteBook(view, selected):
     def confirm():
@@ -179,7 +190,6 @@ def sortStatusTransaction(view, parameter, parameter2, value, order):
     for i in set: #type:ignore
         view.insert(
             "", "end", values=(i[0], i[1], i[2], i[3], i[4], i[5], i[6]))
-
 
 def sortStatusUnavail_book(view):
     for item in view.get_children():

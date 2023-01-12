@@ -469,7 +469,7 @@ def adminMenuPage(root):
         foreground="black",
         background="white",
         font=(myFont, 15),
-        command=lambda: addBooks(root),
+        command=lambda: addBooks(root, "", ""),
         borderwidth=0,
     )  # command=lambda:addBooks(root)
     addBookBtn.place(relx=0.5, rely=0.38, width=240)
@@ -560,12 +560,12 @@ def popup_three(root, text1, text2, text3, table):
         foreground="white",
     ).place(relx=0.24, rely=0.1)
 
-    value1_prompt = Label(
-        popup, text=text1, font=("Helvetica", 15), bg=myColor, fg=offWhite
-    )
-    value1_prompt.place(relx=0.06, rely=0.3, anchor=W)
-    value1 = Entry(popup, width=20)
-    value1.place(relx=0.3, rely=0.3, width=300, anchor=W)
+    # value1_prompt = Label(
+    #     popup, text=text1, font=("Helvetica", 15), bg=myColor, fg=offWhite
+    # )
+    # value1_prompt.place(relx=0.06, rely=0.3, anchor=W)
+    # value1 = Entry(popup, width=20)
+    # value1.place(relx=0.3, rely=0.3, width=300, anchor=W)
 
     value2_prompt = Label(
         popup, text=text2, font=("Helvetica", 15), bg=myColor, fg=offWhite
@@ -584,7 +584,7 @@ def popup_three(root, text1, text2, text3, table):
     submit = Button(
         popup,
         text=" Enter ",
-        command=lambda: add_three(popup, table, value1, value2, value3),
+        command=lambda: add_three(popup, table, text1, value2, value3),
         font=("Helvetica, 15"),
         foreground="black",
         background="#BDCBBD"
@@ -592,7 +592,7 @@ def popup_three(root, text1, text2, text3, table):
     submit.place(relx=0.3, rely=0.6)
 
 
-def addBooks(root):
+def addBooks(root, titleValue, isbnValue):
     cleanPage(root)
     global background
     background = PhotoImage(file="images/backgroundMenu.png")
@@ -613,7 +613,7 @@ def addBooks(root):
     ).place(relx=0.38, rely=0.1)
 
     # title Input
-    titleVar = StringVar()
+    titleVar = StringVar(value = titleValue)
     Label(
         root,
         font=(myFont, 15),
@@ -657,7 +657,7 @@ def addBooks(root):
     )
 
     # isbn input
-    isbnVar = StringVar()
+    isbnVar = StringVar(value = isbnValue)
     Label(
         root,
         font=(myFont, 15),
@@ -739,7 +739,7 @@ def addBooks(root):
         foreground=myColor,
         background="white",
         font=(myFont, 15),
-        command=lambda: addBooks(root),
+        command=lambda: refreshAddBook(root, title, isbn),
     )
     refreshBtn.place(relx=0.38, rely=0.7, anchor=W)
 
