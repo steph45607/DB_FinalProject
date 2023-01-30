@@ -1708,4 +1708,3 @@ def displayPublisher(root):
         font=(myFont, 10),
     )
     backBtn.place(relx=0.01, rely=0.02)
-

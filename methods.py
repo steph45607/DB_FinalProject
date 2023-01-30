@@ -412,20 +412,26 @@ def isReturned(view, selected):
 def addTransactionMethod(bookView, userView, bookSelected, userSelected, dateSelected):
     book = bookView.item(bookSelected)["values"][0]
     user = userView.item(userSelected)["values"][0]
+    print(dateSelected)
     dateStr = dateSelected.strftime("%Y-%m-%d")
-    due = dateSelected + timedelta(days=14)
+    print(dateStr)
+    print(date.today)
+    if dateSelected < date.today():
+        showinfo("Date can not be yesterday or older", "Date can not be yesterday or older")
+    else: 
+        due = dateSelected + timedelta(days=14)
 
-    queryID = "select transaction_id from transaction_details ORDER BY transaction_id DESC LIMIT 1;"
-    cursor.execute(queryID)
-    id = cursor.fetchall()
-    for i in id: # type: ignore
-        id = i[0] + 1
+        queryID = "select transaction_id from transaction_details ORDER BY transaction_id DESC LIMIT 1;"
+        cursor.execute(queryID)
+        id = cursor.fetchall()
+        for i in id: # type: ignore
+            id = i[0] + 1
 
-    query = "INSERT INTO transaction_details VALUES (%s, %s, %s, %s, %s, %s)"
-    data = (id, book, user, dateStr, due, 0)
-    cursor.execute(query, data)
-    conn.commit()
-    showinfo("Data added to database", "Transaction Added")
+        query = "INSERT INTO transaction_details VALUES (%s, %s, %s, %s, %s, %s)"
+        data = (id, book, user, dateStr, due, 0)
+        cursor.execute(query, data)
+        conn.commit()
+        showinfo("Data added to database", "Transaction Added")
 
 def checkOverdue():
     queryStatus = "SELECT transaction_id, due_date FROM transaction_details WHERE borrow_status = 0 "
@@ -439,3 +445,5 @@ def checkOverdue():
             cursor.execute(queryOverdue)
             conn.commit()
 
+# def checkDate(selectedDate):
+#     if selectedDate < date.today:
