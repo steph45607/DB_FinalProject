@@ -11,8 +11,8 @@ Coded with Python, utilizing MySQL database stored in Google Cloud Platform
 * Download all files in this repository.
 * Download the required python libraries in requirements.txt (pip install -r requirements.txt)
 * Run main.py
-</br>
-#### If unable to run main.py immediately, activate a virtual environment </br>
+
+### If unable to run main.py immediately, activate a virtual environment 
 * Download all files in this repository.
 * venv\Scripts\Activate (windows) or source venv/Scripts/activate (Mac)
 * Download the required python libraries in requirements.txt (pip install -r requirements.txt)
