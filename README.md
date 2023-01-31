@@ -12,7 +12,7 @@ Coded with Python, utilizing MySQL database stored in Google Cloud Platform
 * Download the required python libraries in requirements.txt (pip install -r requirements.txt)
 * Run main.py
 </br>
-If unable to run main.py immediately, activate a virtual environment 
+If unable to run main.py immediately, activate a virtual environment </br>
 * venv\Scripts\Activate (windows) or source venv/Scripts/activate (Mac)
 * Download the required python libraries in requirements.txt (pip install -r requirements.txt)
 * run main.py
